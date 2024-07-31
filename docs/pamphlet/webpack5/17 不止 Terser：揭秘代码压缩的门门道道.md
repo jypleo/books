@@ -26,7 +26,7 @@ const c = a + b;
 
 为了应对这两个挑战，很自然的我们可以先将字符串形态的代码转换为结构化、容易分析处理的 AST（抽象语法树）形态，之后在 AST 上应用上面的规则做各种语法、语义、逻辑推理与简化替换，最后按精简过的 AST 生成结果代码。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/aa9c68ef6c6e47918bd6bde4a529513e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/aa9c68ef6c6e47918bd6bde4a529513e~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 社区曾经出现过非常非常多 JavaScript、HTML、CSS 代码压缩工具，基本上都是按照上面这种套路实现的，包括：[Terser](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fterser%2Fterser)、[ESBuild](https://link.juejin.cn/?target=https%3A%2F%2Fesbuild.github.io%2F)、[CSS-Nano](https://link.juejin.cn/?target=https%3A%2F%2Fcssnano.co%2F)、[babel-minify](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fbabel%2Fminify)、[htmlMinifierTerser](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fterser%2Fhtml-minifier-terser) 等，幸运的是，我们可以在 Webpack 中轻松接入这些工具，实现代码压缩。
 
@@ -34,7 +34,7 @@ const c = a + b;
 
 [Terser](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fterser%2Fterser) 是当下 [最为流行](https://link.juejin.cn/?target=https%3A%2F%2Fnpmtrends.com%2Fbabel-minify-vs-terser-vs-uglify-js) 的 ES6 代码压缩工具之一，支持 [Dead-Code Eliminate](https://link.juejin.cn/?target=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDead-code_elimination)、删除注释、删除空格、代码合并、变量名简化等等[一系列](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fterser%2Fterser%23compress-options)代码压缩功能。Terser 的前身是大名鼎鼎的 [UglifyJS](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmishoo%2FUglifyJS)，它在 UglifyJS 基础上增加了 ES6 语法支持，并重构代码解析、压缩算法，使得执行效率与压缩率都有较大提升：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/ca0c4c88962c4f0aba8ff2e188eccbf6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/ca0c4c88962c4f0aba8ff2e188eccbf6~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 数据来源：[github.com/babel/minif…](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fbabel%2Fminify)
 
@@ -250,7 +250,7 @@ module.exports = {
 
 这里的配置逻辑，一是使用 `mini-css-extract-plugin` 将 CSS 代码抽取为单独的 CSS 产物文件，这样才能命中 `css-minimizer-webpack-plugin` 默认的 `test` 逻辑；二是使用 `css-minimizer-webpack-plugin` 压缩 CSS 代码。效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/bc053101d4e545d39c7be284488b6aa6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/bc053101d4e545d39c7be284488b6aa6~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 提示：示例代码已上传到 [小册仓库](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2FTecvan-fe%2Fwebpack-book-samples%2Fblob%2Fmain%2Fminify-css%2Fwebpack.config.js)。
 
@@ -266,7 +266,7 @@ module.exports = {
 
 其中 `parcel-css` 与 ESBuild 压缩性能相对较佳：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d6b3e1450c9b4a6e8090374d9c77c707~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/d6b3e1450c9b4a6e8090374d9c77c707~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 但两者功能与兼容性稍弱，多数情况下推荐使用 `cssnano`。
 
@@ -363,7 +363,7 @@ module.exports = {
 
 这段配置的关键逻辑，一是通过 `html-webpack-plugin` 生成 HTML 文件，这里为了演示方便特意在 HTML 模板 `templateContent` 中插入一些可以被压缩的代码；二是通过 `html-minimizer-plugin` 压缩 HTML 代码，效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/025bcab658134b6995ea76211a7607db~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/025bcab658134b6995ea76211a7607db~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 上图中左边是正常构建结果，右图是经过 `html-minimizer-plugin` 压缩后的构建结果，可以看到如 `doctype` 标签被删掉若干不重要的声明，文档中的备注也被删除，等等。
 

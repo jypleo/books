@@ -131,7 +131,7 @@ person.sleep();
 
 示例中，`Somebody` 初始化时声明了一个 `sleep` 钩子，并在后续调用 `sleep.tap` 函数连续注册三次回调，在调用 `person.sleep()` 语句触发 `sleep.call` 之后，tapable 会按照注册的先后按序执行三个回调。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/b92ebab230e746caaa7a0ae4b90ae581~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/b92ebab230e746caaa7a0ae4b90ae581~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 上述示例中，触发回调时用到了钩子的 `call` 函数，我们也可以选择异步风格的 `callAsync` ，选用 `call` 或 `callAsync` 并不会影响回调的执行逻辑：按注册顺序依次执行 + 忽略回调执行结果，两者唯一的区别是 `callAsync` 需要传入 `callback` 函数，用于处理回调队列可能抛出的异常：
 
@@ -632,7 +632,7 @@ function asyncParallelCall(callback) {
 
 例如：对于 [compiler.hooks.done](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fapi%2Fcompiler-hooks%2F%23done) 钩子，官网介绍：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/4a27c1a2560c4926aa76f9a8adefa035~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/4a27c1a2560c4926aa76f9a8adefa035~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 这是一个 `AsyncSeriesHook` 钩子，意味着：
 
@@ -642,7 +642,7 @@ function asyncParallelCall(callback) {
 
 又或者，对于 [compilation.hooks.optimizeChunkModules](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fapi%2Fcompilation-hooks%2F%23optimizemodules) 钩子，官网介绍：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/ba180e097d804216800ec285758b9a44~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/ba180e097d804216800ec285758b9a44~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 这是一个 `SyncBailHook` 钩子，因此：
 
@@ -672,7 +672,7 @@ sleep.call();
 
 调用 `sleep.call` 时，Tapable 内部处理流程大致为：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1353e6ffa8794086b3dadb91a1de8b04~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1353e6ffa8794086b3dadb91a1de8b04~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 编译过程主要涉及三个实体：
 
@@ -791,11 +791,11 @@ sleep.callAsync("tecvan", (err, name) => {
 
 Tapable 提供的大多数特性都是基于 `Hook + HookCodeFactory` 实现的，如果大家对此有兴趣，可以在 [tapable/lib/Hook.js](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Ftapable%2Fblob%2Fmaster%2Flib%2FHook.js%23L12) 的 `CALL_DELEGATE/CALL_ASYNC_DELEGATE/PROMISE_DELEGATE` 几个函数打断点：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/3b5b6274428f46649a9fd71ffa3d7834~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/3b5b6274428f46649a9fd71ffa3d7834~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 之后，使用 [ndb](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2FGoogleChromeLabs%2Fndb) 命令断点调试，查看动态编译出的代码：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/472e9bca1ddf442a9d44970ae700f59c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/472e9bca1ddf442a9d44970ae700f59c~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 ## 高级特性：Intercept
 

@@ -96,7 +96,7 @@ module.exports = {
 
 其中，TypeScript 借鉴 C# 语言，在 JavaScript 基础上提供了一系列类型约束特性，例如：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d453fe2d92294004971422a2001204d0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/d453fe2d92294004971422a2001204d0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 示例中，用一个数字类型的变量 `num` 减去字符串类型的变量 `str`，这在 TypeScript 的代码编译过程就能提前发现问题，而 JavaScript 环境下则需要到启动运行后才报错。这种类型检查特性虽然一定程度上损失了语言本身的灵活性，但能够让问题在编译阶段提前暴露，确保运行阶段的类型安全性，**特别适合用于构建多人协作的大型 JavaScript 项目**，也因此，时至今日 TypeScript 依然是一项应用广泛的 JavaScript 超集语言。
 
@@ -195,7 +195,7 @@ ESLint 是一种扩展性极佳的 JavaScript 代码风格检查工具，它能�
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `const foo ='foo'; let  bar='bar';  console.log(foo,bar) `   | `const foo = 'foo' const bar = 'bar'  console.log(foo, bar) ` |
 | ESLint 配置：`module.exports = {     "extends": "standard" } ` |                                                              |
-| ESLint 报错：![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/c8f12f682beb4d9288eeb7c3cf107835~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp) |                                                              |
+| ESLint 报错：![img](./assets/c8f12f682beb4d9288eeb7c3cf107835~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp) |                                                              |
 
 
 
@@ -255,7 +255,7 @@ npx webpack
 
 配置完毕后，就可以在 Webpack 编译过程实时看到代码风格错误提示：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d6910d770c114cd89a1d3e8a1c426e77~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/d6910d770c114cd89a1d3e8a1c426e77~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 除常规 JavaScript 代码风格检查外，我们还可以使用适当的 ESLint 插件、配置集实现更丰富的检查、格式化功能，这里推荐几种使用率较高第三方扩展，建议读者跟进学习：
 
@@ -329,7 +329,7 @@ module.exports = {
 | `src/index.ts` 源码                                          | 编译结果                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `const say = (statements: string) => {     console.log(statements) };  // @ts-ignore say("Tecvan"); ` | `/******/ (() => { // webpackBootstrap var __webpack_exports__ = {}; /*!**********************!*\   !*** ./src/index.ts ***!   \**********************/ const say = statements => {   console.log(statements); }; // @ts-ignore   say("Tecvan"); /******/ })() ; ` |
-| ![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/dd3bd994134743a9a30200da59b47606~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp) |                                                              |
+| ![img](./assets/dd3bd994134743a9a30200da59b47606~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp) |                                                              |
 
 
 

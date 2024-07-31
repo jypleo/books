@@ -175,7 +175,7 @@ module.exports = {
 
 除了作为内容转换器外，Loader 运行过程还可以通过一些[上下文接口](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fapi%2Floaders%2F%23thisaddcontextdependency)，**有限制**地影响 Webpack 编译过程，从而产生内容转换之外的副作用。上下文接口将在运行 Loader 时以 `this` 方式注入到 Loader 函数：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/6bf7dcc372ca483ba07edf6f1018ebdf~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/6bf7dcc372ca483ba07edf6f1018ebdf~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 Webpack 官网对 [Loader Context](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fapi%2Floaders%2F%23the-loader-context) 已经有比较详细的说明，这里简单介绍几个比较常用的接口：
 
@@ -384,11 +384,11 @@ Webpack Loader 中有多种上报异常信息的方式：
 
 - 使用 `logger.error`，仅输出错误日志，不会打断编译流程，效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/41c7568e25394b258824516207392fc7~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/41c7568e25394b258824516207392fc7~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - 使用 `this.emitError` 接口，同样不会打断编译流程，效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d8e5b25744af47f79734155a1094ca3e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/d8e5b25744af47f79734155a1094ca3e~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 与 `logger.error` 相比，`emitError` 不受 `infragstrustureLogging` 规则控制，必然会强干扰到最终用户；其次，`emitError` 会抛出异常的 Loader 文件、代码行、对应模块，更容易帮助定位问题。
 
@@ -404,7 +404,7 @@ export default function loader(source) {
 
 之后，Webpack 会将 `callback` 传递过来的错误信息当做模块内容，打包进产物文件：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/ef581459bbfd47bc93c9ef73c02f7424~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/ef581459bbfd47bc93c9ef73c02f7424~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 总的来说，这些方式各自有适用场景，我个人会按如下规则择优选用：
 
@@ -522,7 +522,7 @@ module.exports = {
 - 将 `less-loader` 结果传入 `css-loader`，进一步将 CSS 内容包装成类似 `module.exports = "${css}"` 的 JavaScript 代码片段；
 - 将 `css-loader` 结果传入 `style-loader`，在运行时调用 injectStyle 等函数，将内容注入到页面的 `<style>` 标签。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/b30799fe744941f1b66aeb43f5df49c4~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/b30799fe744941f1b66aeb43f5df49c4~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 三个 Loader 分别完成内容转化工作的一部分，形成从右到左的执行链条。链式调用这种设计有两个好处，一是保持单个 Loader 的单一职责，一定程度上降低代码的复杂度；二是细粒度的功能能够被组装成复杂而灵活的处理链条，提升单个 Loader 的可复用性。
 
@@ -599,11 +599,11 @@ Pitch 翻译成中文是_抛、球场、力度、事物最高点_等，它背后
 
 实现上，Loader 链条执行过程分三个阶段：pitch、解析资源、执行，设计上与 DOM 的事件模型非常相似，pitch 对应到捕获阶段；执行对应到冒泡阶段；而两个阶段之间 Webpack 会执行资源内容的读取、解析操作，对应 DOM 事件模型的 AT_TARGET 阶段：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/55d6c8006a4243d687f044aab0bd1b86~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/55d6c8006a4243d687f044aab0bd1b86~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 `pitch` 阶段按配置顺序从左到右逐个执行 `loader.pitch` 函数(如果有的话)，开发者可以在 `pitch` 返回任意值中断后续的链路的执行：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/06f0126b303644449fce1cb8970001a6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/06f0126b303644449fce1cb8970001a6~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 那么为什么要设计 pitch 这一特性呢？
 
@@ -686,7 +686,7 @@ var content = require('!!css-loader!less-loader!./xxx.less');
 
 注意了，到这里 style-loader 的 pitch 函数返回这一段内容，后续的 Loader 就不会继续执行，当前调用链条中断了：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/a29c25f292e14dd690552d53dae05f9e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/a29c25f292e14dd690552d53dae05f9e~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 之后，Webpack 继续解析、构建 style-loader 返回的结果，遇到 inline loader 语句：
 

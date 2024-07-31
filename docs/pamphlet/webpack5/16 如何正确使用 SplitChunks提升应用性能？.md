@@ -17,7 +17,7 @@ Chunk 是 Webpack 内部一个非常重要的底层设计，用于组织、管�
 4. 分配完毕后，根据 SplitChunksPlugin 的启发式算法进一步对这些 Chunk 执行**裁剪、拆分、合并、代码调优**，最终调整成运行性能(可能)更优的形态；
 5. 最后，将这些 Chunk 一个个输出成最终的产物(Asset)文件，编译工作到此结束。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/73dad47e4d3e45419a9ad3f7ff746fa0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/73dad47e4d3e45419a9ad3f7ff746fa0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 可以看出，Chunk 在构建流程中起着承上启下的关键作用 —— 一方面作为 Module 容器，根据一系列默认 **分包策略** 决定哪些模块应该合并在一起打包；另一方面根据 `splitChunks` 设定的 **策略** 优化分包，决定最终输出多少产物文件。
 
@@ -33,11 +33,11 @@ Runtime Chunk 规则比较简单，本文先不关注，但 Initial Chunk 与 As
 
 假如多个 Chunk 同时依赖同一个 Module，那么这个 Module 会被不受限制地重复打包进这些 Chunk，例如对于下面的模块关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1481f62edb484224aefd7498bb9b871a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1481f62edb484224aefd7498bb9b871a~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 示例中 `main/index` 入口(`entry`)同时依赖于 `c` 模块，默认情况下 Webpack 不会对此做任何优化处理，只是单纯地将 `c` 模块同时打包进 `main/index` 两个 Chunk：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/ae729e4dd408433ea242733ae9913d89~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/ae729e4dd408433ea242733ae9913d89~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. **资源冗余 & 低效缓存：**
 
@@ -206,7 +206,7 @@ import common from './common'
 
 上例包含四个模块，形成如下模块关系图：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/88d54f6ffcfe44658fddb93c4bd57e95~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/88d54f6ffcfe44658fddb93c4bd57e95~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 其中，`entry-a`、`entry-b` 分别被视作 Initial Chunk 处理；`async-module` 被 `entry-a` 以异步方式引入，因此被视作 Async Chunk 处理。那么对于 `common` 模块来说，分别被三个不同的 Chunk 引入，此时引用次数为 3，配合下面的配置：
 
@@ -253,13 +253,13 @@ module.exports = {
 
 举个例子，对于上例所说的模块关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1a1d537299ed44da947a7dbf03e22a18~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1a1d537299ed44da947a7dbf03e22a18~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 若 `minChunks = 2` ，则 `common` 模块命中 `minChunks` 规则被独立分包，浏览器请求 `entry-a` 时，则需要同时请求 `common` 包，并行请求数为 1 + 1=2。
 
 而对于下述模块关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/e6ddb044d1d649a297ec76000bcad3d6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/e6ddb044d1d649a297ec76000bcad3d6~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 若 `minChunks = 2` ，则 `common-1` 、`common-2` 同时命中 `minChunks` 规则被分别打包，浏览器请求 `entry-b` 时需要同时请求 `common-1` 、`common-2` 两个分包，并行数为 2 + 1 = 3，此时若 `maxInitialRequest = 2`，则分包数超过阈值，`SplitChunksPlugin` 会 **放弃 `common-1`、`common-2` 中体积较小的分包**。`maxAsyncRequest` 逻辑与此类似，不在赘述。
 
@@ -307,7 +307,7 @@ module.exports = {
 
 以上述模块关系为例：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/e8a66c3358fb42e59660a0640210f359~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/e8a66c3358fb42e59660a0640210f359~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 若此时 Webpack 配置的 `minChunks` 大于 2，且 `maxInitialRequests` 也同样大于 2，如果 `common` 模块的体积大于上述说明的 `minxSize` 配置项则分包成功，`commont` 会被分离为单独的 Chunk，否则会被合并入原来的 3 个 Chunk。
 

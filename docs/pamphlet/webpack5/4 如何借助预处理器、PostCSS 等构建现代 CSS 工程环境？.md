@@ -10,7 +10,7 @@
 
 原生 Webpack 并不能识别 CSS 语法，假如不做额外配置直接导入 `.css` 文件，会导致编译失败：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/f538975af33141acb130ced3e89ab220~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/f538975af33141acb130ced3e89ab220~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 为此，在 Webpack 中处理 CSS 文件，通常需要用到：
 
@@ -22,7 +22,7 @@
 
 三种组件各司其职：`css-loader` 让 Webpack 能够正确理解 CSS 代码、分析资源依赖；`style-loader`、`mini-css-extract-plugin` 则通过适当方式将 CSS 插入到页面，对页面样式产生影响：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/5be680b877f44414a4349b62bc0143ba~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/5be680b877f44414a4349b62bc0143ba~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 下面我们先从 `css-loader` 聊起，`css-loader` 提供了很多处理 CSS 代码的基础能力，包括 CSS 到 JS 转译、依赖解析、Sourcemap、css-in-module 等，基于这些能力，Webpack 才能像处理 JS 模块一样处理 CSS 模块代码。接入时首先需要安装依赖：
 
@@ -106,7 +106,7 @@ injectStylesIntoStyleTag(
 
 页面运行效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/4c4206f0d4834065acaf50f53147228b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/4c4206f0d4834065acaf50f53147228b~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 经过 `style-loader` + `css-loader` 处理后，样式代码最终会被写入 Bundle 文件，并在运行时通过 `style` 标签注入到页面。这种将 JS、CSS 代码合并进同一个产物文件的方式有几个问题：
 
@@ -156,7 +156,7 @@ module.exports = {
 | `index.css`                                                  | `index.js`                                                   |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `body {     background: yellow;     font-weight: bold; } `   | `import './index.css';  const node = document.createElement('span'); node.textContent = 'Hello world'; document.body.appendChild(node); ` |
-| 产物 `main.css`：![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1f787b0f8d5b4088b4de4e64dc71ec04~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp) | 产物 `main.js`：![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d436857927f94c418538da8120513824~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp) |
+| 产物 `main.css`：![img](./assets/1f787b0f8d5b4088b4de4e64dc71ec04~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp) | 产物 `main.js`：![img](./assets/d436857927f94c418538da8120513824~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp) |
 | 产物 `index.html`：`<!DOCTYPE html> <html> <head>   <meta charset="utf-8">   <title>Webpack App</title>   <meta name="viewport" content="width=device-width, initial-scale=1">   <script defer src="main.js"></script>   <link href="main.css" rel="stylesheet"> </head>  <body> </body>  </html> ` |                                                              |
 
 

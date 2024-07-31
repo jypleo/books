@@ -16,7 +16,7 @@ Hello，同学们，欢迎来到 Webpack 的世界。
 
 Webpack 是一种用于构建 JavaScript 应用程序的静态模块打包器，它能够以一种相对一致且开放的处理方式，加载应用中的所有资源文件（图片、CSS、视频、字体文件等），并将其合并打包成浏览器兼容的 Web 资源文件。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/a620f1c107ee4e5b869aca1bcc49ac86~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/a620f1c107ee4e5b869aca1bcc49ac86~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 注意，上面说的“**一致且开放**”的加载模型，这在当时算的上是非常 Breaking Change 的设计！
 
@@ -67,7 +67,7 @@ Webpack 之前社区虽然已经实现了许多模块打包器，例如 [Gulp](h
 
 那必然也是非常有必要的。第一，根据 [State-of-JS 2021](https://link.juejin.cn/?target=https%3A%2F%2F2021.stateofjs.com%2Fen-US%2Flibraries%2Fbuild-tools) 的统计数据，2021年 Webpack 还保持高达 89% 的使用率，依然是绝对的大多数！虽然未来必然会有许多用户在特定场景下选用其它构建工具，但短期内还不太可能撼动 Webpack 的头部地位。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/49584dd774ed4c8dbed1dfda09ecae53~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/49584dd774ed4c8dbed1dfda09ecae53~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 第二，Vite 一类 Unbundle 工具定位于解决特定问题，而 Webpack 则几乎无所不能，功能覆盖小程序、桌面应用、微前端、WASM 等诸多场景，许多情况下 Webpack 依然是最优解。
 
@@ -109,7 +109,7 @@ Webpack 始终是一个工具，就像一把瑞士军刀，无论你多了解它
 
 小册内容也将沿着上述四个方向展开：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/25c05841892d41bfae468d496a968442~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/25c05841892d41bfae468d496a968442~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - **基础用法篇**：首先，我会聚焦在应用层面，先简要讲解 Webpack 基本配置规则；之后针对具体场景、技术栈介绍更具体的方法、工具与技巧，例如：如何搭建完备的 JavaScript、CSS 开发环境；如何搭建微前端、NPM 包、桌面应用等，帮助你成为 **纯熟的 Webpack 使用者**。
 - **性能优化篇**：熟练基本使用方法后，我们会开始关注构建与应用性能方面，这部分我打算先介绍如何分析构建性能，以及若干实用性能分析工具；之后从 Webpack 底层原理以及诸多计算机原理出发，倒推 Webpack 构建以及 Web 应用性能优化方法与理论依据，让你 **能够应对各种各式各样的性能问题**。

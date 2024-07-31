@@ -9,13 +9,13 @@
 
 在 《[Init、Make、Seal：真正读懂 Webpack 核心流程](https://juejin.cn/book/7115598540721618944/section/7119035873802813475)》中，我们已经介绍了 Webpack 底层构建逻辑大体上可以划分为：「**初始化、构建、封装**」三个阶段：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d54599450fe94d0a988ec70214e4ead8~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/d54599450fe94d0a988ec70214e4ead8~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 其中，「**构建**」阶段负责分析模块间的依赖关系，建立起模块之间的 [依赖关系图](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fconcepts%2Fdependency-graph%2F%23root)（ModuleGraph）；紧接着，在「**封装**」阶段根据依赖关系图，将模块分开封装进若干 Chunk 对象中，并将 Chunk 之间的父子依赖关系梳理成 ChunkGraph 与若干 ChunkGroup 对象。
 
 「封装」阶段最重要的目标就是根据「构建」阶段收集到的 ModuleGraph 关系图构建 ChunkGraph 关系图，这个过程的逻辑比较复杂：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/92e472f300934c009836445743dd6996~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/92e472f300934c009836445743dd6996~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 我们简单分析一下这里面几个重要步骤的实现逻辑。
 
@@ -59,17 +59,17 @@ class Compilation {
 
 执行完成后，形成如下数据结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/39e2b041b1994fa2b9c4cb92046f1b90~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/39e2b041b1994fa2b9c4cb92046f1b90~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 其次，若此时配置了 `entry.runtime`，Webpack 还会在这个阶段为运行时代码 [创建](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L2933-L2934) 相应的 Chunk 并直接 [分配](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L2937-L2938) 给 `entry` 对应的 `ChunkGroup`对象。一切准备就绪后调用 [buildChunkGraph](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L1347-L1348) 函数，进入下一步骤。
 
 **第二步：** 在 `buildChunkGraph` 函数内 [调用](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L1367-L1368) `visitModules` 函数，遍历 ModuleGraph，将所有 Module 按照依赖关系分配给不同 `Chunk` 对象；这个过程中若遇到 [异步模块](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fblog%2F2020-10-10-webpack-5-release%2F%23async-modules)，则为该模块 [创建](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L740-L742)新的 `ChunkGroup` 与 `Chunk` 对象，最终形成如下数据结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/f065f4c71784477abff7b113eb6dd2bf~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/f065f4c71784477abff7b113eb6dd2bf~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 **第三步：** 在 `buildChunkGraph` 函数中[调用](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L1381-L1382) `connectChunkGroups` 方法，建立 `ChunkGroup` 之间、`Chunk` 之间的依赖关系，生成完整的 `ChunkGraph` 对象，最终形成如下数据结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/cd08a1a0b94b4f2d804399c77e916862~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/cd08a1a0b94b4f2d804399c77e916862~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 **第四步：** 在 `buildChunkGraph` 函数中[调用](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L1397-L1398) `cleanupUnconnectedGroups` 方法，清理无效 `ChunkGroup`，主要起到性能优化作用。
 
@@ -81,15 +81,15 @@ class Compilation {
 
 - `Chunk`：Module 用于读入模块内容，记录模块间依赖等；而 Chunk 则根据模块依赖关系合并多个 Module，输出成资产文件（合并、输出产物的逻辑，我们放到下一章讲解）：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/2bac3fb532bc406fb16331555c309f9b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/2bac3fb532bc406fb16331555c309f9b~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - `ChunkGroup`：一个 `ChunkGroup` 内包含一个或多个 `Chunk` 对象；`ChunkGroup` 与 `ChunkGroup` 之间形成父子依赖关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/219d44ad9b4e4d2e9847761f83774d89~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/219d44ad9b4e4d2e9847761f83774d89~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - `ChunkGraph`：最后，Webpack 会将 Chunk 之间、ChunkGroup 之间的依赖关系存储到 `compilation.chunkGraph` 对象中，形成如下类型关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/424fe595633d41649a616f2f5076adb4~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/424fe595633d41649a616f2f5076adb4~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 ## 默认分包规则
 
@@ -116,15 +116,15 @@ module.exports = {
 
 遍历 `entry` 对象属性并创建出 `chunk[main]` 、`chunk[home]` 两个对象，此时两个 Chunk 分别包含 `main` 、`home` 模块：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1a40257760914ba08783bf2d6a3c1bef~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1a40257760914ba08783bf2d6a3c1bef~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 初始化完毕后，Webpack 会根据 `ModuleGraph` 的依赖关系数据，将 `entry` 下所触及的所有 Module 塞入 Chunk （发生在 [visitModules](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FbuildChunkGraph.js%23L187-L188) 方法），比如对于如下文件依赖：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/9d7fbfc917b1416cb1ee86216c3131a0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/9d7fbfc917b1416cb1ee86216c3131a0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 `main.js` 以同步方式直接或间接引用了 a/b/c/d 四个文件，Webpack 会首先为 `main.js` 模块创建 Chunk 与 EntryPoint 对象，之后将 a/b/c/d 模块逐步添加到 `chunk[main]` 中，最终形成：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/83a4ebfe25b940d5adfb9d04a7507646~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/83a4ebfe25b940d5adfb9d04a7507646~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > **Async Chunk:**
 
@@ -143,11 +143,11 @@ import './sync-c.js'
 
 在入口模块 `index.js` 中，以同步方式引入 sync-a、sync-b；以异步方式引入 async-a 模块；同时，在 async-a 中以同步方式引入 `sync-c` 模块，形成如下模块依赖关系图：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/716dba615b424147ad4076ce0a735eb5~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/716dba615b424147ad4076ce0a735eb5~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 此时，Webpack 会为入口 `index.js`、异步模块 `async-a.js` 分别创建分包，形成如下 Chunk 结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/892f542a06ae4d31a18130e93b07648a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/892f542a06ae4d31a18130e93b07648a~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 并且 `chunk[index]` 与 `chunk[async-a]` 之间形成了单向依赖关系，Webpack 会将这种依赖关系保存在 `ChunkGroup._parents` 、`ChunkGroup._children` 属性中。
 
@@ -155,7 +155,7 @@ import './sync-c.js'
 
 最后，除了 `entry`、异步模块外，Webpack5 还支持将 Runtime 代码单独抽取为 Chunk。这里说的 Runtime 代码是指一些为了确保打包产物能正常运行，而由 Webpack 注入的一系列基础框架代码，举个例子，常见的 Webpack 打包产物结构如：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/de9a9cbc02a9452baa1feddcd7c5ef71~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/de9a9cbc02a9452baa1feddcd7c5ef71~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 上图红框圈出来的一大段代码就是 Webpack 动态生成的运行时代码，编译时，Webpack 会根据业务代码，决定输出哪些支撑特性的运行时代码（基于 `Dependency` 子类），例如：
 
@@ -192,7 +192,7 @@ module.exports = {
 
 入口 `index`、`home` 共享相同的 `runtime` 值，最终生成三个 Chunk，分别为：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/dcbe4fdd5f2d41d0af0b7fcf990a9bb7~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/dcbe4fdd5f2d41d0af0b7fcf990a9bb7~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 此时入口 `chunk[index]`、`chunk[home]` 与运行时 `chunk[solid-runtime]` 也会形成父子依赖关系。
 
@@ -200,11 +200,11 @@ module.exports = {
 
 默认分包规则最大的问题是无法解决模块重复，如果多个 Chunk 同时包含同一个 Module，那么这个 Module 会被不受限制地重复打包进这些 Chunk。比如假设我们有两个入口 main/index 同时依赖了同一个模块：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/b483355b9b3e4acfb022a2e3aa54d226~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/b483355b9b3e4acfb022a2e3aa54d226~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 默认情况下，Webpack 不会对此做额外处理，只是单纯地将 c 模块同时打包进 main/index 两个 Chunk，最终形成：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/452ebaf82f7c4df88ae7b5334ff17cba~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/452ebaf82f7c4df88ae7b5334ff17cba~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 可以看到 `chunk` 间互相孤立，模块 c 被重复打包，对最终产物可能造成不必要的性能损耗！
 

@@ -2,17 +2,17 @@
 
 Webpack 的功能集非常庞大：模块打包、代码分割、按需加载、Hot Module Replacement、文件监听、Tree-shaking、Sourcemap、Module Federation、Dev Server、DLL、多进程打包、Persistent Cache 等等，但抛开这些花里胡哨的能力，最最核心的功能依然是：**At its core, webpack is a static module bundler for modern** **JavaScript** **applications**，也就是所谓的**静态模块打包能力**。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/f6c8846ed06646fdba24cc3053d66f5e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/f6c8846ed06646fdba24cc3053d66f5e~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 Webpack 能够将各种类型的资源 —— 包括图片、音视频、CSS、JavaScript 代码等，通通转译、组合、拼接、生成标准的、能够在不同版本浏览器兼容执行的 JavaScript 代码文件，这一特性能够轻易抹平开发 Web 应用时处理不同资源的逻辑差异，使得开发者以一致的心智模型开发、消费这些不同的资源文件。
 
 打包功能的底层实现逻辑很复杂，抛去大多数分支逻辑后，大致包含如下步骤：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/a26d60df160440adae904dcdeefb44d7~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/a26d60df160440adae904dcdeefb44d7~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 为了方便理解，我把上述过程划分为三个阶段：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/3293ad8708e14a8db0567dac24fb8668~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/3293ad8708e14a8db0567dac24fb8668~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. **初始化阶段**：修整配置参数，创建 Compiler、Compilation 等基础对象，并初始化插件及若干内置工厂、工具类，并最终根据 `entry` 配置，找到所有入口模块；
 2. **构建阶段**：从 `entry` 文件开始，调用 `loader` 将模块转译为 JavaScript 代码，调用 [Acorn](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Facornjs%2Facorn) 将代码转换为 AST 结构，遍历 AST 从中找出该模块依赖的模块；之后 **递归** 遍历所有依赖模块，找出依赖的依赖，直至遍历所有项目资源后，构建出完整的 **[模块依赖关系图](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fconcepts%2Fdependency-graph%2F)**；
@@ -28,7 +28,7 @@ Webpack 能够将各种类型的资源 —— 包括图片、音视频、CSS、J
 
 初始化阶段主要完成三个功能：修整 & 校验配置对象、运行插件、调用 `compiler.compile` 方法开始执行构建操作，代码比较简单，如下图：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/83d697220d324ed5a3ddba7e90d332ca~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/83d697220d324ed5a3ddba7e90d332ca~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 首先，校验用户参数，并合并默认配置对象：
 
@@ -125,7 +125,7 @@ class EntryPlugin {
 
 `addEntry` 之后的执行逻辑：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1bf47933e15042deb0b2051d907847fa~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1bf47933e15042deb0b2051d907847fa~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. 调用 [handleModuleCreation](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L1476-L1477)，根据文件类型构建 `module` 子类 —— 一般是 [NormalModule](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FNormalModule.js)；
 
@@ -147,7 +147,7 @@ class EntryPlugin {
    2. [HarmonyExportDependencyParserPlugin](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2Fdependencies%2FHarmonyExportDependencyParserPlugin.js%23L153-L154) 监听该钩子，将依赖资源添加为 Dependency 对象；
    3. 调用 `module` 对象的 `addDependency`， 将 Dependency 对象转换为 Module 对象并添加到依赖数组中。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/604e4c7e9dac4069be57bd3be9f9800c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/604e4c7e9dac4069be57bd3be9f9800c~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. AST 遍历完毕后，调用 `module.handleParseResult` 处理模块依赖数组；
 2. 对于 `module` 新增的依赖，调用 `handleModuleCreate`，控制流回到第一步；
@@ -159,27 +159,27 @@ class EntryPlugin {
 
 这个递归处理流程是「**构建阶段**」的精髓，我们来看个例子，假设对于下图这种简单模块依赖关系：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/bdb0ecf9b1144117851a8279aabe59e2~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/bdb0ecf9b1144117851a8279aabe59e2~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 其中 `index.js` 为 entry 文件，依赖于 a/b 文件；a 依赖于 c/d 文件。初始化编译环境之后，`EntryPlugin` 根据 `entry` 配置找到 `index.js` 文件，并调用 `compilation.addEntry` 函数将之添加为 Module 对象，触发构建流程，构建完毕后内部会生成这样的数据结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/29c82d31f5a144f1a63def697453caa5~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/29c82d31f5a144f1a63def697453caa5~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 之后，调用 Acorn 将 `index.js` 代码解析为 AST，并遍历 AST 找到 `index.js` 文件的依赖：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/42239b4cb1c24df9981ccb1477f60877~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/42239b4cb1c24df9981ccb1477f60877~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 得到两个新的依赖对象：`dependence[a.js]` 与 `dependence[b.js]` ，这是下一步操作的关键线索，紧接着调用 `module[index.js]` 的 `handleParseResult` 函数处理这两个依赖对象，得到 a、b 两个新的 Module 对象：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/7066113b7aeb4f78bd21d67121e16602~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/7066113b7aeb4f78bd21d67121e16602~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 接着，又触发 `module[a/b]` 的 `handleModuleCreation` 方法，从 `a.js` 模块中又解析到 `c.js/d.js` 两个新依赖，于是再继续调用 `module[a]` 的 `handleParseResult`，递归上述流程：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/6cfc533ae9204df48bf70ebc2dfda0fa~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/6cfc533ae9204df48bf70ebc2dfda0fa~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 最终得到 `a/b/c/d` 四个 Module 与对应的 Dependency 对象：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/8daff06d0ef544bd979b18b22d265735~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/8daff06d0ef544bd979b18b22d265735~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 提示：Dependency、Module、Entry 等都是 Webpack 内部非常重要的基本类型，在后续章节中我们会单独展开这几个类型的基本涵义与相互之间的关系。
 
@@ -205,7 +205,7 @@ compile(callback) {
 
 也就是说，`compilation.seal` 函数是「生成阶段」的入口函数，`seal` 原意密封、上锁，我个人理解在 Webpack 语境下接近于“将模块装进 Chunk”，核心流程：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/2657e3ff33214d3aac023556d8858c77~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/2657e3ff33214d3aac023556d8858c77~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. 创建本次构建的 [ChunkGraph](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FChunkGraph.js) 对象。
 
@@ -263,7 +263,7 @@ compile(callback) {
    1. 遍历每一个 Chunk 的 Module 对象，调用 [_codeGenerationModule](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L3297-L3298)；
    2. `_codeGenerationModule` 又会继续往下调用 [module.codeGeneration](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FModule.js%23L876-L877) 生成单个 Module 的代码，这里注意不同 Module 子类有不同 `codeGeneration` 实现，对应不同产物代码效果。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d3fe03a7c0c745e199d1b4c3f817c955~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/d3fe03a7c0c745e199d1b4c3f817c955~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 1. 所有 Module 都执行完 `codeGeneration`，生成模块资产代码后，开始调用 [createChunkAssets](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L4520-L4521) 函数，为每一个 Chunk 生成资产文件。
 2. 调用 [compilation.emitAssets](https://link.juejin.cn/?target=https%3A%2F%2Fgithub1s.com%2Fwebpack%2Fwebpack%2Fblob%2FHEAD%2Flib%2FCompilation.js%23L4638-L4639) 函数“**提交**”资产文件，注意这里还只是记录资产文件信息，还未写出磁盘文件。
@@ -289,11 +289,11 @@ module.exports = {
 
 实例配置中有两个入口，对应的文件结构：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/150a2a6fd43f401a806b61975f69ce42~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/150a2a6fd43f401a806b61975f69ce42~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 a 依赖于 c/e；b 依赖于 c/d；a/b 同时依赖于 c。最终生成的 Chunk 结构为：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/58b94810c0df4ea485f9ab2c07c1d700~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/58b94810c0df4ea485f9ab2c07c1d700~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 也就是根据依赖关系，`chunk[a]` 包含了 a/c/e 三个模块，`chunk[b]` 包含了 b/c/d 三个模块。
 
@@ -303,7 +303,7 @@ a 依赖于 c/e；b 依赖于 c/d；a/b 同时依赖于 c。最终生成的 Chun
 
 OK，上面我们已经把逻辑层面的构造主流程梳理完了，最后我们再结合**资源形态流转**的角度重新考察整个过程，加深理解：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/defaaadcd2f04cf4ae950a746455a86d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/defaaadcd2f04cf4ae950a746455a86d~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - ```
   compiler.make

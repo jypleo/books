@@ -16,7 +16,7 @@ PWA 全称 Progressive Web Apps (渐进式 Web 应用)，原始定义很复杂�
 
 - [ServiceWorker](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FWeb%2FAPI%2FService_Worker_API)： 可以理解为一种介于网页与服务器之间的本地代理，主要实现 PWA 应用的离线运行功能。例如 `ServiceWorker` 可以将页面静态资源缓存到本地，用户再次运行页面访问这些资源时，`ServiceWorker` 可拦截这些请求并直接返回缓存副本，即使此时用户处于离线状态也能正常使用页面；
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/46045f1163244ae5ab365e13d8db0a20~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/46045f1163244ae5ab365e13d8db0a20~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - [manifest](https://link.juejin.cn/?target=https%3A%2F%2Fweb.dev%2Fadd-manifest%2F%3Futm_source%3Ddevtools) 文件：描述 PWA 应用信息的 JSON 格式文件，用于实现本地安装功能，通常包含应用名、图标、URL 等内容，例如：
 
@@ -105,11 +105,11 @@ module.exports = {
 
 接下来，运行并使用 Chrome 打开页面，打开开发者工具，切换到 `Applicatios > Service Workers` 面板，可以看到：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/5b138e624b01470c8e0e4e8fa66806ab~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/5b138e624b01470c8e0e4e8fa66806ab~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 这表明 Service Worker 已经正常安装到浏览器上。此外，地址栏右方还会出现一个下载图标：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/44a00677f9104c30bec98dd3c49edf80~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/44a00677f9104c30bec98dd3c49edf80~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 点击该图标可将应用下载到本地，并在桌面创建应用图标 —— 效果如同安装独立 App 一样。
 
@@ -171,7 +171,7 @@ const modules = ['foo', 'bar'].map(r => require(`./${r}.js`));
 
 可以看到在 `main.js` 中并没有引用 `unused.js` ，但打包产物中却包含了 `src` 目录下所有文件：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/b9a6e1e4df514535ae1d5e641a905199~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/b9a6e1e4df514535ae1d5e641a905199~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 这是因为 Webpack 遇到示例中的 `require` 语句时，仅仅依靠词法规则、静态语义、AST 等手段并不能推断出实际依赖情况，只能退而求其次粗暴地将所有可能用到的代码一股脑合并进来，这种处理手段很可能会带来许多意想不到的结果，很可能触发 BUG！
 
@@ -186,7 +186,7 @@ Electron 是一种使用 JavaScript、HTML、CSS 等技术构建跨平台桌面�
 - 主进程是一个 Node 程序，能够使用所有 Node 能力及 Electron 提供的 Native API，主要负责应用窗口的创建与销毁、事件注册分发、版本更新等；
 - 渲染进程本质上是一个 Chromium 实例，负责加载我们编写的页面代码，渲染成 Electron 应用界面。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/487e3db9d38d41728117c7951652bdb1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/487e3db9d38d41728117c7951652bdb1~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 提示：Chromium 是一个非常简洁的开源浏览器，许多浏览器都基于 Chromium 二次开发而成，例如 Chrome、Microsoft Edge、Opera 等。
 

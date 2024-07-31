@@ -1,6 +1,6 @@
 [Sourcemap 协议](https://link.juejin.cn/?target=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k%2Fedit%23heading%3Dh.qz3o9nc69um5) 最初由 Google 设计并率先在 Closure Inspector 实现，它的主要作用就是将经过压缩、混淆、合并的产物代码还原回未打包的原始形态，帮助开发者在生产环境中精确定位问题发生的行列位置，例如：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/2fa7318e270d451684c3f8da78bbab5c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/2fa7318e270d451684c3f8da78bbab5c~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 在 Webpack 内部，这段生成 Sourcemap 映射数据的逻辑并不复杂，一句话总结：在 [processAssets](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.js.org%2Fapi%2Fcompilation-hooks%2F%23processassets) 钩子遍历产物文件 `assets` 数组，调用 `webpack-sources` 提供的 `map` 方法，最终计算出 `asset` 与源码 `originSource` 之间的映射关系。
 
@@ -128,7 +128,7 @@ Sourcemap 最初版本生成的 `.map` 文件非常大，体积大概为编译�
 
 [VLQ](https://link.juejin.cn/?target=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FVariable-lengsth_quantity) 是一种将整数数值转换为 Base64 的编码算法，它先将任意大的整数转换为一系列六位字节码，再按 Base64 规则转换为一串可见字符。VLQ 使用六位比特存储一个编码分组，例如：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/3885498f30a7462789d05fe8af482c6f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/3885498f30a7462789d05fe8af482c6f~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 数字 7 经过 VLQ 编码后，结果为 `001110`，其中：
 
@@ -138,7 +138,7 @@ Sourcemap 最初版本生成的 `.map` 文件非常大，体积大概为编译�
 
 这样一个六位编码分组，就可以按照 Base64 的映射规则转换为 `ABC` 等可见字符，例如上述数字 7 编码结果 `001110`，等于十进制的 14，按 Base64 字码表可映射为字母 `O`。
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1ebe7f1a58974319badd51afa21d9f62~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1ebe7f1a58974319badd51afa21d9f62~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 但是，分组中只有中间的 4 个字节用于表示数值，因此单个分组只能表达 **-15 ~ 15** 之间的数值范围，对于超过这个范围的整数，需要组合多个分组，共同表达同一数字，具体规则：
 
@@ -160,7 +160,7 @@ Sourcemap 最初版本生成的 `.map` 文件非常大，体积大概为编译�
  1200 => 10;01011;0000 => 100000,101011,000010 =>    grC
 ```
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/5a3c5cc523044b959ec2ae1fcefee6a4~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/5a3c5cc523044b959ec2ae1fcefee6a4~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 结合 VLQ 编码规则，我们再回过头来解读本章开头的例子，对于代码：
 
@@ -290,13 +290,13 @@ eval("var foo = 'bar'\n\n\n//# sourceURL=webpack:///./src/index.ts?")
 
 浏览器映射效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/830f8d072cfd4b8bae4c95e7d29c974b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/830f8d072cfd4b8bae4c95e7d29c974b~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 虽然 Sourcemap 提供的映射功能可精确定位到文件、行、列粒度，但有时在**行**级别已经足够帮助我们达到调试定位的目的，此时可选择使用 `cheap` 关键字，简化 Sourcemap 内容，减少 Sourcemap 文件体积。
 
 1. **`module` 关键字**：`module` 关键字只在 `cheap` 场景下生效，例如 `cheap-module-source-map`、`eval-cheap-module-source-map`。当 `devtool` 包含 `cheap` 时，Webpack 根据 `module` 关键字判断按 loader 联调处理结果作为 source，还是按处理之前的代码作为 source。例如：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/0630aad5c07744f8be3d2a3d0198d959~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/0630aad5c07744f8be3d2a3d0198d959~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 注意观察上例 `sourcesContent` 字段，左边 `devtool` 带 `module` 关键字，因此此处映射的，是包含 `class Person` 的最原始代码；而右边生成的 `sourcesContent` ，则是经过 babel-loader 编译处理的内容。
 
@@ -339,7 +339,7 @@ console.log("bar");
 
 两者区别仅在于编译产物最后一行的 `//# sourceMappingURL=` 指令，当你需要 Sourcemap 功能，又不希望浏览器 Devtool 工具自动加载时，可使用此选项。需要打开 Sourcemap 时，可在浏览器中手动加载：
 
-![f412b094-f908-42a3-9b51-a3f3622a71c0.gif](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/98e6b0cd9aa54f6b8f3090dcd36c91b9~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![f412b094-f908-42a3-9b51-a3f3622a71c0.gif](./assets/98e6b0cd9aa54f6b8f3090dcd36c91b9~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 总结一下，Webpack 的 `devtool` 值都是由以上七种关键字的一个或多个组成，虽然提供了 27 种候选项，但逻辑上都是由上述规则叠加而成，例如：
 

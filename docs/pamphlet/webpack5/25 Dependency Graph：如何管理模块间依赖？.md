@@ -17,7 +17,7 @@ Dependency Graph 概念来自官网 [Dependency Graph | webpack](https://link.ju
 
 正式介绍 Dependency Graph 结构之前，我们先 **简单** 回顾一下 Webpack 构建阶段的关键过程：
 
-![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/923e83d508b445b0bd0d4bfbc2300365~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/923e83d508b445b0bd0d4bfbc2300365~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp?)
 
 1. 首先根据 `entry` 配置信息创建若干 `EntryDependency` 对象；
 2. 调用 `NormalModuleFactory` ，根据 `EntryDependency` 对象的资源路径创建 `Module` 子类对象；
@@ -28,7 +28,7 @@ Dependency Graph 概念来自官网 [Dependency Graph | webpack](https://link.ju
 
 这个过程从 `entry` 模块开始，逐步递归找出所有依赖文件，模块之间隐式形成了以 `entry` 为起点，以模块为节点，以导入导出依赖为边的有向图关系 —— 也就是 Webpack 官网所说的 Dependency Graph。
 
-![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eca01f5a133a49bca2ed14be69d2b303~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eca01f5a133a49bca2ed14be69d2b303~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp?)
 
 这个 Dependency Graph 是 Webpack 内部非常重要的过程信息之一，后续封装 Chunk、Code Splits、Tree-Shaking、Hot Module Replacement 等等，几乎所有功能都需要依赖这一信息实现。
 
@@ -50,7 +50,7 @@ Webpack 5.0 之后的 Dependency Graph 涉及如下数据类型：
 - `ModuleGraphConnection` ：记录模块间引用关系的数据结构，内部通过 `originModule` 属性记录引用关系中的父模块，通过 `module` 属性记录子模块；
 - `ModuleGraphModule` ：`Module` 对象在 Dependency Graph 体系下的补充信息，包含模块对象的 `incomingConnections` —— 指向模块本身的 `ModuleGraphConnection` 集合，即谁引用了模块自身；`outgoingConnections` —— 该模块对外的依赖，即该模块引用了其他那些模块。
 
-![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fa6ad679ab4c4ce8944608dd23714d21~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fa6ad679ab4c4ce8944608dd23714d21~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp?)
 
 这些类型之间关系的基本逻辑是：
 
@@ -101,7 +101,7 @@ Webpack 5.0 之后的 Dependency Graph 涉及如下数据类型：
 
 依赖关系收集过程，主要发生在构建阶段的两个节点：
 
-![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/107d8f9e0c5647b8ae75e105fb7ccbfa~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/107d8f9e0c5647b8ae75e105fb7ccbfa~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp?)
 
 - `addDependency` ：webpack 从模块内容中解析出引用关系后，创建适当的 `Dependency` 子类并调用该方法记录到 `module` 实例；
 - `handleModuleCreation` ：模块解析完毕后，webpack 遍历父模块的依赖集合，调用该方法创建 `Dependency` 对应的子模块对象，之后调用 `moduleGraph.setResolvedModule` 方法将父子引用信息记录到 `moduleGraph` 对象上。
@@ -150,7 +150,7 @@ class ModuleGraph {
 
 看个简单例子，对于下面的依赖关系：
 
-![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/30eb7b3522c14eb8a207c39f83cdd7d5~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp?)
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/30eb7b3522c14eb8a207c39f83cdd7d5~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp?)
 
 Webpack 启动后：
 

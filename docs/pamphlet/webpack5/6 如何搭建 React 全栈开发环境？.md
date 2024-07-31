@@ -51,7 +51,7 @@ module.exports = {
 
 经过 `babel-loader` 处理后，JSX 将被编译为 JavaScript 格式的 `React.createElement` 函数调用，如：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/11c6cca0522148af9ebb80368613802f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/11c6cca0522148af9ebb80368613802f~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 此外，JSX 支持新旧两种转换模式，一是上图这种 `React.createElement` 函数，这种模式要求我们在代码中引入 React，如上图的 `import React from "react"`；二是自动帮我们注入运行时代码，此时需要设置 `runtime:automatic`，如：
 
@@ -69,7 +69,7 @@ module.exports = {
 }
 ```
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/c8949ce39cad48529a72e827e189e53d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/c8949ce39cad48529a72e827e189e53d~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 这种模式会自动导入 `react/jsx-runtime`，不必开发者手动管理 React 依赖。
 
@@ -77,7 +77,7 @@ module.exports = {
 
 注意，上例 Webpack 配置还无法处理 CSS 代码：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/7b7f0da0a54a468c850603553e8108a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/7b7f0da0a54a468c850603553e8108a7~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 为此需要添加 CSS 加载器，如 `css-loader/style-loader`，如：
 
@@ -140,7 +140,7 @@ module.exports = {
 
 之后，运行 `npx webpack serve` 命令，即可自动打开带热更功能的页面：
 
-![c100d66f-156d-4600-96c2-2838e70ac59b.gif](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/f41ba0c2c6ed4c57b5576ab8f8067b9a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![c100d66f-156d-4600-96c2-2838e70ac59b.gif](./assets/f41ba0c2c6ed4c57b5576ab8f8067b9a~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 ## 复用其它编译工具
 
@@ -460,11 +460,11 @@ export default App;
 
 之后，编译并执行 `node ./dist/server.js` 启动 Node 应用，访问页面时服务端将首先返回如下 HTML 内容：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/b2898268b18f4d85ad36eff2b64b79c0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/b2898268b18f4d85ad36eff2b64b79c0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 页面也能正常运行 `App.jsx` 交互效果：
 
-![840a136d-fe81-42fc-93e0-3d7063c43949.gif](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/ae1b5a2d37db4d86ba5a7282a049a0ef~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![840a136d-fe81-42fc-93e0-3d7063c43949.gif](./assets/ae1b5a2d37db4d86ba5a7282a049a0ef~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 提示：
 >

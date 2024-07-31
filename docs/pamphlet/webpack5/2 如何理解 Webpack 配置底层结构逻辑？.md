@@ -10,7 +10,7 @@ Webpack 原生提供了上百种配置项，这些配置最终都会作用于 We
 
 Webpack 的打包过程非常复杂，但大致上可简化为：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/784ef02a144a4b3ebfbcbe13b06ac7bb~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/784ef02a144a4b3ebfbcbe13b06ac7bb~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 - **输入**：从文件系统读入代码文件；
 - **模块递归处理**：调用 Loader 转译 Module 内容，并将结果转换为 AST，从中分析出模块依赖关系，进一步递归调用模块处理过程，直到所有依赖文件都处理完毕；
@@ -63,7 +63,7 @@ Webpack 的打包过程非常复杂，但大致上可简化为：
 
 工具类配置内聚性较强，通常一个配置项专注于解决一类工程问题，学习时建议先对配置项按其功能做个简单分类，例如上述开发效率类、性能优化类等，之后再展开研究其可选值与效果。
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/02ccea1194e045689143011ef62ff553~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/02ccea1194e045689143011ef62ff553~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 综上，虽然 Webpack 提供了上百项复杂配置，但大体上都可以归类为流程类配置或工具类配置，对于流程类配置应该多关注它们对编译主流程的影响；而工具类则更加内聚，基本上一种配置项解决一种工程化问题。
 
@@ -167,7 +167,7 @@ yarn global add @vue/cli
 
 安装完毕后，可以使用 `vue -V` 测试是否安装成功：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/d212c315f0f44ca49178e6e9a8c695c9~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/d212c315f0f44ca49178e6e9a8c695c9~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 接下来，使用 `vue create` 命令创建项目：
 
@@ -189,7 +189,7 @@ Vue CLI v4.5.15
 
 这里 Vue CLI 内置了为 Vue 2、Vue 3 分别定制的脚手架方案，对应上述第一、二项，不过这两种方案默认只会包含 Babel、Eslint 工具，实用性不强。所以结合项目的实际需求，通常会选择第三个选项 "Manually select features" 定制各项特性：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/5e0f2b01c9864747a63f212c6fee355e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/5e0f2b01c9864747a63f212c6fee355e~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 > 提示：具体用法，请参考 [Vue CLI](https://link.juejin.cn/?target=https%3A%2F%2Fcli.vuejs.org%2F) 官网：[cli.vuejs.org/](https://link.juejin.cn/?target=https%3A%2F%2Fcli.vuejs.org%2F)
 
@@ -203,7 +203,7 @@ yarn serve
 
 顺利的话，最终会运行起页面如：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/040c12736c64414f9c9390ea31eaae59~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/040c12736c64414f9c9390ea31eaae59~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 Vue CLI 底层依赖于 Webpack 实现编译打包等工程化能力，开发者可通过 `configureWebpack` 与 `chainWebpack` 配置项修改 Webpack 配置信息。
 
@@ -249,7 +249,7 @@ vue inspect > output.js
 
 `inspect` 命令执行完毕后，会生成内容如：
 
-![img](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/dbe1cb77ffa0492cb32d5236cc0e22f0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](./assets/dbe1cb77ffa0492cb32d5236cc0e22f0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 此外，`inspect` 还提供许多根据不同条件生成配置的参数，例如针对编译环境生成配置：
 

@@ -126,11 +126,11 @@ module.exports = function(env, argv) {
 
 | 命令：                                                       | `env` 参数值：                               |
 | ------------------------------------------------------------ | -------------------------------------------- |
-| npx webpack --env prod                                       | { prod: true }                               |
-| npx webpack --env prod --env min                             | { prod: true, min: true }                    |
-| npx webpack --env platform=app --env production              | { platform: "app", production: true }        |
+| npx webpack --env prod                                       | { prod: `true` }                               |
+| npx webpack --env prod --env min                             | { prod: `true`, min: `true` }                    |
+| npx webpack --env platform=app --env production              | { platform: "app", production: `true` }        |
 | npx webpack --env foo=bar=app                                | { foo: "bar=app"}                            |
-| npx webpack --env app.platform="staging" --env app.name="test" | { app: { platform: "staging", name: "test" } |
+| npx webpack --env app.platform="staging" --env app.name="test" | { app: { platform: "staging", name: "test" } } |
 
 
 
@@ -275,7 +275,7 @@ npx webpack --config=webpack.development.js
 
 在前面章节中，我们已经基于各种应用场景综合讲解了 Webpack 方方面面的应用方法，其中涉及多达上百种配置项，不太可能一一详细讲解，但大致上可以划分下图中展示的几种分类：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1b0350016e9e4d92868ecbdcbbded33d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1b0350016e9e4d92868ecbdcbbded33d~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 包括：流程配置、性能优化类配置、日志类配置、开发效率类配置等，这里面较常用，需要着重学习的配置有：
 
@@ -355,11 +355,11 @@ module.exports = {
 
 示例中，`foo` 入口的 `dependOn` 属性指向 `main` 入口，此时 Webpack 认为：客户端在加载 `foo` 产物之前必然会加载 `main`，因此可以将重复的模块代码、运行时代码等都放到 `main` 产物，减少不必要的重复，最终打包结果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/1558bef8b4cf42f5994750000e1b3725~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/1558bef8b4cf42f5994750000e1b3725~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 左边为 `main` 产物，包含所有模块、运行时代码，与普通 Bundle 无异；右边为 `foo` 产物，代码结构非常清爽。作为对比，若不指定 `dependOn` 属性，则构建结果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/5271c309cfb54c26a3d7d32ec1558001~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/5271c309cfb54c26a3d7d32ec1558001~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 可以看出两边内容并无差异。
 
@@ -397,7 +397,7 @@ module.exports = {
 
 示例中，`main` 与 `foo` 入口均将 `runtime` 声明为 `common-runtime`，此时 Webpack 会将这两个入口的运行时代码都抽取出来，放在 `common-runtime` Bundle 中，效果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/44051543ac17436abab8dd1844500435~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/44051543ac17436abab8dd1844500435~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 `entry.runtime` 是一种常用的应用性能优化手段，建议大家多做尝试、使用。
 
@@ -469,7 +469,7 @@ module.exports = [
 
 之后，执行构建命令，结果：
 
-![image.png](/Volumes/Wen‘s SSD/Webpack5 核心原理与应用实践/assets/000c2d30c12940018df57f172d33c3b0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![image.png](./assets/000c2d30c12940018df57f172d33c3b0~tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.awebp)
 
 可以看到左边 `web` 版本中需要注入使用 JSONP 异步加载 JS 文件的运行时代码；而右边 `node` 版本则可以直接使用 Node 环境下的 `require` 实现异步加载，因此不需要注入相关运行时。
 
