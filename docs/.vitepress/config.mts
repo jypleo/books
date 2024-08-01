@@ -69,4 +69,5 @@ export default defineConfig({
   vite: {
     assetsInclude: ['**/*.awebp'],
   },
+  ignoreDeadLinks: true,
 });

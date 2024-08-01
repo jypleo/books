@@ -57,7 +57,7 @@ https://docs.npmjs.com/cli/v8/commands/npm-init
 
 `npm init <initializer>` 可以被用于安装一个新的或已经存在的 npm 软件包。
 
-Initializer 是一个被命名为 create-<initializer> 的软件包。它会通过 npm-exec 运行。
+Initializer 是一个被命名为 `create-<initializer>` 的软件包。它会通过 npm-exec 运行。
 
 以 smarty-ui 的 cli 为例，你只需要将软件包名称命名为  create-smarty-app，这样就可以通过。
 
