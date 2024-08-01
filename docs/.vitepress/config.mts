@@ -25,10 +25,19 @@ export default defineConfig({
       },
       { text: 'Examples', link: '/markdown-examples' },
     ],
-    sidebar: generateSidebar({
-      documentRootPath: '/docs',
-      sortMenusOrderNumericallyFromTitle: true,
-    }),
+    sidebar: generateSidebar([
+      {
+        documentRootPath:
+          '/docs/pamphlet/advanced-guide-to-mastering-typeScript',
+        resolvePath: '/pamphlet/advanced-guide-to-mastering-typeScript/',
+        sortMenusOrderNumericallyFromTitle: true,
+      },
+      {
+        documentRootPath: '/docs/pamphlet/webpack5',
+        resolvePath: '/pamphlet/webpack5/',
+        sortMenusOrderNumericallyFromTitle: true,
+      },
+    ]),
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
