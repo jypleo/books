@@ -1,0 +1,130 @@
+import{_ as s,c as a,o as n,a2 as p}from"./chunks/framework.D8Prfz4N.js";const f=JSON.parse('{"title":"11.技巧篇：阴影与滤镜","description":"","frontmatter":{},"headers":[],"relativePath":"pamphlet/玩转css艺术之美/11.技巧篇：阴影与滤镜.md","filePath":"pamphlet/玩转css艺术之美/11.技巧篇：阴影与滤镜.md"}'),e={name:"pamphlet/玩转css艺术之美/11.技巧篇：阴影与滤镜.md"},o=p(`<h1 id="_11-技巧篇-阴影与滤镜" tabindex="-1">11.技巧篇：阴影与滤镜 <a class="header-anchor" href="#_11-技巧篇-阴影与滤镜" aria-label="Permalink to &quot;11.技巧篇：阴影与滤镜&quot;">​</a></h1><h3 id="前言" tabindex="-1">前言 <a class="header-anchor" href="#前言" aria-label="Permalink to &quot;前言&quot;">​</a></h3><p><code>阴影</code>和<code>滤镜</code>能让视觉元素看上去更具立体感，<code>阴影</code>为视觉元素提供了边界轮廓，<code>滤镜</code>为视觉元素提供了多变外观。随着浏览器不断升级，<code>阴影</code>和<code>滤镜</code>的兼容性得到了大大提升。</p><p><code>阴影</code>和<code>滤镜</code>在一般情况下可有可无，它们更多是为了点缀视觉元素而存在。早期的视觉元素为了实现这两种效果，只能使用图像实现，每次维护都需重新切图重新替换，确实麻烦。</p><p>如今CSS3为<code>阴影</code>和<code>滤镜</code>提供了对应的属性，可通过编码的方式完成这些效果，就无须使用图像实现了。</p><h3 id="阴影" tabindex="-1">阴影 <a class="header-anchor" href="#阴影" aria-label="Permalink to &quot;阴影&quot;">​</a></h3><p>阴影效果有三剑客，分别是<code>box-shadow</code>、<code>text-shadow</code>、<code>drop-shadow()</code>。<code>box-shadow</code>和<code>text-shadow</code>都是一个属性，而<code>drop-shadow()</code>是<code>filter</code>里的滤镜函数。</p><p>三者都能产生阴影效果，如何区分它们的使用场景呢。其实从字面意思也大概能猜出各自的使用场景了。</p><ul><li><p>想要盒子轮廓产生阴影效果，使用<code>box-shadow</code></p></li><li><p>想要文本轮廓产生阴影效果，使用<code>text-shadow</code></p></li><li><p>想要透明图像的非透明部分轮廓产生阴影效果，使用<code>fliter:drop-shadow()</code></p></li></ul><p>三个阴影都具备以下大部分参数，只要认识以下参数，阴影效果随时能上手。</p><ul><li><p><strong>OffsetX</strong>：水平偏移，阴影的水平位置(<code>必选</code>)</p></li><li><ul><li><code>Offset</code>：偏移，可用任何长度单位，允许负值，正值向右负值向左(默认<code>0</code>)</li></ul></li><li><p><strong>OffsetY</strong>：垂直偏移，阴影的垂直位置(<code>必选</code>)</p></li><li><ul><li><code>Offset</code>：偏移，可用任何长度单位，允许负值，正值向下负值向上(默认<code>0</code>)</li></ul></li><li><p><strong>Blur</strong>：模糊半径，阴影的清晰程度(虚色)</p></li><li><ul><li><code>Length</code>：长度，可用任何长度单位，值越大边缘越模糊(默认<code>0</code>)</li></ul></li><li><p><strong>Spread</strong>：扩展距离，阴影的实体尺寸(实色)</p></li><li><ul><li><code>Length</code>：长度，可用任何长度单位，允许负值，正值扩大负值缩小(默认<code>0</code>)</li></ul></li><li><p><strong>Color</strong>：投影颜色</p></li><li><ul><li><code>transparent</code>：透明(<code>默认</code>)</li><li><code>Keyword</code>：颜色关键字</li></ul></li><li><ul><li><code>HEX</code>：十六进制色彩模式</li><li><code>RGB</code>或<code>RGBA</code>：RGB/A色彩模式</li></ul></li><li><ul><li><code>HSL</code>或<code>HSLA</code>：HSL/A色彩模式</li></ul></li><li><p><strong>Position</strong>：投影位置</p></li><li><ul><li><code>outset</code>：阴影显示在外部(<code>默认</code>)</li><li><code>inset</code>：阴影显示在内部</li></ul></li></ul><p>上述参数都是<code>box-shadow</code>标配的，而<code>text-shadow</code>和<code>drop-shadow()</code>除了<code>spread</code>和<code>position</code>，其余全部标配。三个阴影的用法都一致，无什么特殊区别，以下着重讲解<code>box-shadow</code>的技巧，另外两个属性也可参照该属性适当扩展使用场景。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>box-shadow: offset-x offset-y blur spread color position</span></span>
+<span class="line"><span>text-shadow: offset-x offset-y blur color</span></span>
+<span class="line"><span>drop-shadow(offset-x, offset-y, blur, color)</span></span></code></pre></div><p>多重阴影</p><p>与<code>backgound</code>和<code>mask</code>一致可声明多重效果，使用<code>逗号</code>隔开。先声明的阴影层叠等级最高，会遮挡后面声明的阴影，排列方向由<code>position</code>决定。后面声明的阴影接着上一个排列下去，此时需将<code>blur</code>或<code>spread</code>增大，防止被先声明的阴影遮挡。</p><p>定向阴影</p><p>巧妙声明<code>spread</code>为<code>blur</code>的负值可产生定向阴影，这样是为了抵消阴影的扩散。还记得<code>offset-x</code>和<code>offset-y</code>的取值吗，正负决定了偏移方向。当然这个技巧只适用于<code>box-shadow</code>。</p><ul><li><code>offset-x</code>：正值向右负值向左</li><li><code>offset-y</code>：正值向下负值向上</li></ul><p>根据上述<code>offset-x</code>和<code>offset-y</code>的偏移方向，可确定以下定向阴影的方向对应的参数。</p><ul><li><p>向左：<code>offset-x</code>为负，<code>offset-y</code>为<code>0</code></p></li><li><p>向右：<code>offset-x</code>为正，<code>offset-y</code>为<code>0</code></p></li><li><p>向上：<code>offset-x</code>为<code>0</code>，<code>offset-y</code>为负</p></li><li><p>向下：<code>offset-x</code>为<code>0</code>，<code>offset-y</code>为正</p></li></ul><p>若想多几个方向产生定向阴影，可结合多重阴影的规则实现。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298854-be38666c-a2c2-43d3-9081-c49bc587ba97.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>.shadow {</span></span>
+<span class="line"><span>    margin-left: 50px;</span></span>
+<span class="line"><span>    border: 1px solid #f66;</span></span>
+<span class="line"><span>    width: 200px;</span></span>
+<span class="line"><span>    height: 200px;</span></span>
+<span class="line"><span>    &amp;:nth-child(4n-3) {</span></span>
+<span class="line"><span>        margin-left: 0;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.left {</span></span>
+<span class="line"><span>        box-shadow: -10px 0 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.right {</span></span>
+<span class="line"><span>        box-shadow: 10px 0 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.up {</span></span>
+<span class="line"><span>        box-shadow: 0 -10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.down {</span></span>
+<span class="line"><span>        box-shadow: 0 10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.left-up {</span></span>
+<span class="line"><span>        box-shadow: -10px 0 5px -5px #f66, 0 -10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.left-down {</span></span>
+<span class="line"><span>        box-shadow: -10px 0 5px -5px #f66, 0 10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.right-up {</span></span>
+<span class="line"><span>        box-shadow: 10px 0 5px -5px #f66, 0 -10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.right-down {</span></span>
+<span class="line"><span>        box-shadow: 10px 0 5px -5px #f66, 0 10px 5px -5px #f66;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>模拟边框</p><p>众所周知，<code>border</code>参与到盒模型的计算和布局中，占据了一定的位置。若希望边框只是一件附属物，不纳入盒模型的计算和布局中，可用<code>outline</code>代替<code>border</code>，而<code>outline</code>的用法和参数与<code>border</code>一致，效果上无太大区别，唯一的却别是<code>outline</code>描绘的轮廓不纳入盒模型的计算和布局中。</p><p>本章认识的<code>box-shadow</code>也能代替<code>border</code>产生边框效果，当然也不纳入盒模型的计算和布局中。当然这个技巧只适用于<code>box-shadow</code>。</p><ul><li>阴影不影响布局，可能会覆盖其他节点及其阴影</li><li>阴影不触发滚动条，也不会增加滚动区域大小</li></ul><p><code>blur</code>渲染阴影是虚色，而<code>spread</code>渲染阴影是实色，所以可将其余参数声明为<code>0</code>，<code>spread</code>声明为正值，编写形式为<code>box-shadow:0 0 0 10px #f66</code>。还可结合<code>border-radius</code>让阴影变成圆角。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298958-a9c90bb7-8051-422e-854b-d34acc3cc3d7.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>.shadow {</span></span>
+<span class="line"><span>    border: 1px solid #f66;</span></span>
+<span class="line"><span>    width: 200px;</span></span>
+<span class="line"><span>    height: 200px;</span></span>
+<span class="line"><span>    box-shadow: 0 0 0 10px #f66;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>.shadow {</span></span>
+<span class="line"><span>    width: 200px;</span></span>
+<span class="line"><span>    height: 200px;</span></span>
+<span class="line"><span>    box-shadow: 0 0 0 10px #f66;</span></span>
+<span class="line"><span>    &amp;.borders {</span></span>
+<span class="line"><span>        margin-left: 100px;</span></span>
+<span class="line"><span>        box-shadow: 0 0 0 10px #f66, 0 0 0 20px #66f;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><h5 id="彩虹色带" tabindex="-1">彩虹色带 <a class="header-anchor" href="#彩虹色带" aria-label="Permalink to &quot;彩虹色带&quot;">​</a></h5><p>彩虹色带很漂亮，可用<code>box-shadow</code>将其渲染得淋漓尽致。实现原理主要是使用了多重阴影，另外也可用第7章<strong>函数计算</strong>的<code>clip-path</code>实现一番。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298867-34b7a201-c462-438f-b9b9-a8f0dc27cd07.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;div class=&quot;rainbow-bar bar-1&quot;&gt;&lt;/div&gt;</span></span>
+<span class="line"><span>&lt;div class=&quot;rainbow-bar bar-2&quot;&gt;&lt;/div&gt;</span></span>
+<span class="line"><span>$rainbow: 0 0 0 8px #f66 inset,</span></span>
+<span class="line"><span>    0 0 0 16px #f90 inset,</span></span>
+<span class="line"><span>    0 0 0 24px #ff3 inset,</span></span>
+<span class="line"><span>    0 0 0 32px #3c9 inset,</span></span>
+<span class="line"><span>    0 0 0 40px #9c3 inset,</span></span>
+<span class="line"><span>    0 0 0 48px #09f inset,</span></span>
+<span class="line"><span>    0 0 0 56px #66f inset;</span></span>
+<span class="line"><span>.rainbow-bar {</span></span>
+<span class="line"><span>    width: 250px;</span></span>
+<span class="line"><span>    &amp;.bar-1 {</span></span>
+<span class="line"><span>        overflow: hidden;</span></span>
+<span class="line"><span>        position: relative;</span></span>
+<span class="line"><span>        height: 125px;</span></span>
+<span class="line"><span>        &amp;::after {</span></span>
+<span class="line"><span>            display: block;</span></span>
+<span class="line"><span>            border-radius: 100%;</span></span>
+<span class="line"><span>            width: 100%;</span></span>
+<span class="line"><span>            height: 200%;</span></span>
+<span class="line"><span>            box-shadow: $rainbow;</span></span>
+<span class="line"><span>            content: &quot;&quot;;</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;.bar-2 {</span></span>
+<span class="line"><span>        margin: 125px 0 0 50px;</span></span>
+<span class="line"><span>        border-radius: 100%;</span></span>
+<span class="line"><span>        height: 250px;</span></span>
+<span class="line"><span>        box-shadow: $rainbow;</span></span>
+<span class="line"><span>        clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/ZEbWrdL" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/color/%E4%BD%BF%E7%94%A8box-shadow%E6%8F%8F%E7%BB%98%E5%BD%A9%E8%99%B9%E8%89%B2%E5%B8%A6.vue" target="_blank" rel="noreferrer">Here</a></li></ul><h5 id="专栏头像" tabindex="-1">专栏头像 <a class="header-anchor" href="#专栏头像" aria-label="Permalink to &quot;专栏头像&quot;">​</a></h5><p>上述谈到<code>阴影</code>和<code>滤镜</code>能让视觉元素看上去更具立体感，实际上阴影起了最大作用。<code>box-shadow</code>和<code>text-shadow</code>结合起来能让视觉元素更立体更动感。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298828-9c70372c-914b-4df4-9962-1a750694765e.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;div class=&quot;article-avatar&quot;&gt;</span></span>
+<span class="line"><span>    &lt;p class=&quot;left&quot;&gt;JowayYoung&lt;/p&gt;</span></span>
+<span class="line"><span>    &lt;p class=&quot;right&quot;&gt;谈前端&lt;/p&gt;</span></span>
+<span class="line"><span>&lt;/div&gt;</span></span>
+<span class="line"><span>.article-avatar {</span></span>
+<span class="line"><span>    display: flex;</span></span>
+<span class="line"><span>    flex-flow: column wrap;</span></span>
+<span class="line"><span>    justify-content: center;</span></span>
+<span class="line"><span>    align-items: center;</span></span>
+<span class="line"><span>    border-radius: 100%;</span></span>
+<span class="line"><span>    width: 250px;</span></span>
+<span class="line"><span>    height: 250px;</span></span>
+<span class="line"><span>    background-color: #f66;</span></span>
+<span class="line"><span>    box-shadow: 0 0 50px 5px rgba(#000, .2) inset;</span></span>
+<span class="line"><span>    line-height: 50px;</span></span>
+<span class="line"><span>    text-shadow: 5px 5px 10px rgba(#000, .5);</span></span>
+<span class="line"><span>    font-weight: bold;</span></span>
+<span class="line"><span>    font-size: 30px;</span></span>
+<span class="line"><span>    color: #fff;</span></span>
+<span class="line"><span>    .left {</span></span>
+<span class="line"><span>        border-top: 3px solid #fff;</span></span>
+<span class="line"><span>        text-indent: -1em;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    .right {</span></span>
+<span class="line"><span>        text-indent: 2em;</span></span>
+<span class="line"><span>        font-size: 40px;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/BaaQemW" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/component/%E4%B8%93%E6%A0%8F%E5%A4%B4%E5%83%8F.vue" target="_blank" rel="noreferrer">Here</a></li></ul><h5 id="聚焦区域" tabindex="-1">聚焦区域 <a class="header-anchor" href="#聚焦区域" aria-label="Permalink to &quot;聚焦区域&quot;">​</a></h5><p>有无遇过一些迭代新功能的网站，进去时会有一些导航提示，告诉你网站增加了哪些内容。</p><p>这个导航提示通常都是一个矩形区域定位在增加内容上方，区域内部透明，凸显增加内容，而区域外部会带上一层蒙层，兼容其他内容。当然这个效果可用<code>box-shadow</code>实现，还记得阴影可调制各种透明颜色吗？将<code>spread</code>延长到<code>9999px</code>足以覆盖整个网站了。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298746-99da1fd1-b95a-4617-acd7-4489f58d4c50.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;div class=&quot;img-cliper&quot;&gt;</span></span>
+<span class="line"><span>    &lt;img src=&quot;https://static.yangzw.vip/codepen/gz.jpg&quot;&gt;</span></span>
+<span class="line"><span>    &lt;i&gt;&lt;/i&gt;</span></span>
+<span class="line"><span>&lt;/div&gt;</span></span>
+<span class="line"><span>.img-cliper {</span></span>
+<span class="line"><span>    overflow: hidden;</span></span>
+<span class="line"><span>    position: relative;</span></span>
+<span class="line"><span>    img {</span></span>
+<span class="line"><span>        width: 400px;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    i {</span></span>
+<span class="line"><span>        position: absolute;</span></span>
+<span class="line"><span>        left: 50px;</span></span>
+<span class="line"><span>        top: 30px;</span></span>
+<span class="line"><span>        border-radius: 100%;</span></span>
+<span class="line"><span>        width: 100px;</span></span>
+<span class="line"><span>        height: 50px;</span></span>
+<span class="line"><span>        box-shadow: 0 0 0 9999px rgba(#000, .5);</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/zYONxRG" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/figure/%E4%BD%BF%E7%94%A8box-shadow%E8%A3%81%E5%89%AA%E8%81%9A%E7%84%A6%E5%8C%BA%E5%9F%9F.vue" target="_blank" rel="noreferrer">Here</a></li></ul><h3 id="滤镜" tabindex="-1">滤镜 <a class="header-anchor" href="#滤镜" aria-label="Permalink to &quot;滤镜&quot;">​</a></h3><p>玩过<code>Photoshop</code>的同学都知道，其内置的强大滤镜能让图像焕然一新。曾经只能切图完成这些图像滤镜效果，如今可用CSS3提供的<code>filter</code>完成这些滤镜效果了。</p><p>以前每次修改网页滤镜效果都需重新切图，再换上新的图像，使用CSS滤镜就免去这些烦恼。不妨看看<code>filter</code>提供的那些滤镜属性吧。</p><ul><li><p><strong>blur()</strong>：模糊</p></li><li><ul><li><code>Length</code>：长度，可用任何长度单位，值为<code>0</code>显示原图，值越大越模糊</li></ul></li><li><p><strong>brightness()</strong>：亮度</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示全黑，值为<code>100%</code>显示原图</li></ul></li><li><p><strong>contrast()</strong>：对比度</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示全黑，值为<code>100%</code>显示原图</li></ul></li><li><p><strong>drop-shadow()</strong>：阴影</p></li><li><ul><li>参考上述阴影</li></ul></li><li><p><strong>grayscale()</strong>：灰度</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示原图，值为<code>100%</code>显示全灰</li></ul></li><li><p><strong>hue-rotate()</strong>：色相旋转</p></li><li><ul><li><code>Angle</code>：角度，值为<code>0</code>显示原图，值为<code>0~360deg</code>减弱原图色彩，值超过<code>360deg</code>则相当绕N圈再计算剩余的值</li></ul></li><li><p><strong>invert()</strong>：反相</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示原图，值为<code>100%</code>完全反转原图色彩</li></ul></li><li><p><strong>opacity()</strong>：透明度</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示透明，值为<code>100%</code>显示原图</li></ul></li><li><p><strong>saturate()</strong>：饱和度</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>完全不饱和原图，值为<code>100%</code>显示原图</li></ul></li><li><p><strong>sepia()</strong>：褐色</p></li><li><ul><li><code>Percentage</code>：百分比，可用<code>0~1</code>代替，值为<code>0</code>显示原图，值为<code>100%</code>显示褐</li></ul></li></ul><p>滤镜更偏向设计方向，若学过设计课程的同学可能对滤镜的调制会更顺手。其实<code>filter</code>怎么用呢？问设计师索取图像在<code>图像软件</code>的滤镜参数声明<code>filter</code>即可。当然<code>filter</code>与<code>backgound</code>和<code>mask</code>一致可声明多重效果。</p><p>滤镜调制</p><p>其实<code>filter</code>上手不难，难就难在每个人的审美不同，很难做出比较唯美的滤镜效果，更多是看个人在设计方向的进修程度。</p><p>所以无设计基础的同学，可参照<strong>Cssarm</strong>的<a href="https://una.im/CSSgram/" target="_blank" rel="noreferrer">官网</a>和<a href="https://una.im/CSSgram/css/cssgram.min.css" target="_blank" rel="noreferrer">源码</a>学习滤镜调制，其源码通过<code>filter</code>复现了<strong>Instagram</strong>网站内置的图像滤镜效果。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298791-2f858e7d-a3ed-4532-979e-43058c09e8bc.png" alt="img"></p><h5 id="悼念模式" tabindex="-1">悼念模式 <a class="header-anchor" href="#悼念模式" aria-label="Permalink to &quot;悼念模式&quot;">​</a></h5><p>一行代码全站进入悼念模式，把<code>&lt;html&gt;</code>替换成<code>&lt;html style=&quot;filter:grayscale(1)&quot;&gt;</code>即可，简单粗暴。当然核心代码是<code>filter:grayscale(1)</code>，意思是<code>把当前节点及其后代节点设置成100%的灰度模式</code>。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/png/2985494/1607321298977-1801fd91-a61c-4aa2-84fa-bd9e71fa5281.png" alt="img"></p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;img class=&quot;mourning-mode&quot; src=&quot;https://static.yangzw.vip/codepen/car.jpg&quot;&gt;</span></span>
+<span class="line"><span>.mourning-mode {</span></span>
+<span class="line"><span>    width: 400px;</span></span>
+<span class="line"><span>    filter: grayscale(100%);</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>可能有些同学在使用上述技巧时会发现声明<code>position:absolute/fixed</code>的节点会出现异常，导致某些布局排版错乱。因为节点声明不为<code>none</code>的<code>filter</code>时，若自身及其后代节点声明了<code>position:absolute/fixed</code>，则为其创建一个新容器，使得这些定位节点其定位基准相对这个新容器进行。</p><p>相信遇到上述问题的同学，应该都是在<code>&lt;body&gt;</code>或某个主要节点上声明<code>filter</code>吧。根据上述原理，把<code>filter:grayscale(1)</code>声明到<code>&lt;html&gt;</code>上就行。</p><p>因为不管怎样设置定位基准，<code>&lt;html&gt;</code>都是最顶层的容器，即使创建了新的定位基准节点，也不会对自身及其后代节点产生不符合预期的影响。</p><p>这也就是为何开头直接把<code>&lt;html&gt;</code>替换成<code>&lt;html style=&quot;filter:grayscale(1)&quot;&gt;</code>，当然笔者贴出来的示例也是为了讲解声明<code>filter:grayscale(1)</code>后出现的坑，同样原理，也可解决其他因为声明<code>filter</code>而导致布局排版错乱的问题。</p><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/vYBKqwe" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/color/%E4%BD%BF%E7%94%A8filter%E5%BC%80%E5%90%AF%E6%82%BC%E5%BF%B5%E6%A8%A1%E5%BC%8F.vue" target="_blank" rel="noreferrer">Here</a></li></ul>`,68),l=[o];function c(i,d,t,r,h,g){return n(),a("div",null,l)}const b=s(e,[["render",c]]);export{f as __pageData,b as default};

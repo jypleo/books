@@ -1,0 +1,147 @@
+import{_ as s,c as a,o as n,a2 as p}from"./chunks/framework.D8Prfz4N.js";const b=JSON.parse('{"title":"15.实战篇：实战大操作-变量控件","description":"","frontmatter":{},"headers":[],"relativePath":"pamphlet/玩转css艺术之美/15.实战篇：实战大操作-变量控件.md","filePath":"pamphlet/玩转css艺术之美/15.实战篇：实战大操作-变量控件.md"}'),e={name:"pamphlet/玩转css艺术之美/15.实战篇：实战大操作-变量控件.md"},l=p(`<h1 id="_15-实战篇-实战大操作-变量控件" tabindex="-1">15.实战篇：实战大操作-变量控件 <a class="header-anchor" href="#_15-实战篇-实战大操作-变量控件" aria-label="Permalink to &quot;15.实战篇：实战大操作-变量控件&quot;">​</a></h1><h3 id="前言" tabindex="-1">前言 <a class="header-anchor" href="#前言" aria-label="Permalink to &quot;前言&quot;">​</a></h3><p>在第8章<strong>变量计算</strong>中使用整章篇幅介绍变量，变量作为CSS体系中最高逼格的特性，没有之一。随着浏览器日益完善，变量可大范围在项目中使用，无需关注其兼容性。</p><p>虽说变量可在纯CSS中起到领头羊的作用，但是变量的设计初衷是为了更便利CSS与JS间的联系。CSS使用变量有如下好处。</p><ul><li><p>减少样式代码的重复性</p></li><li><p>增加样式代码的扩展性</p></li><li><p>提高样式代码的灵活性</p></li><li><p>增多一种CSS与JS的通讯方式</p></li><li><p>不用深层遍历DOM改变某个样式</p></li></ul><p>本章的主题是<strong>变量控件</strong>，主要是基于变量与JS通讯简化基于JS逻辑的效果。也是本小册唯二两章结合JS完成效果的章节，常见控件有<code>放大镜</code>和<code>滚动渐变背景</code>。</p><h3 id="放大镜" tabindex="-1">放大镜 <a class="header-anchor" href="#放大镜" aria-label="Permalink to &quot;放大镜&quot;">​</a></h3><p>传统的放大镜效果需依赖大部分JS逻辑，移动和显示的效果均依赖JS，通过JS计算偏移量再渲染样式。</p><p>本次使用变量简化这些JS逻辑，将计算偏移量的逻辑整合到变量中，还记得第7章<strong>函数计算</strong>的<code>calc()</code>吗？<code>calc()</code>用于动态计算单位，是本次改造的核心用法。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/gif/2985494/1607321735170-7c1f07cc-c182-4923-9852-21a87aac94e1.gif" alt="img"></p><p>基于上述需求，实时获取鼠标的<code>左偏移量</code>和<code>上偏移量</code>即可，而这两个偏移量是相对父节点的。通过<code>左偏移量</code>和<code>上偏移量</code>结合<code>calc()</code>即可计算放大镜显示内容相对父节点的显示位置。</p><p><code>event</code>提供以下八个偏移量，若不了解其概念很容易发生混淆。</p><ul><li><p><strong>screenX/screenY</strong>：相对<code>屏幕区域左上角</code>定位，若发生滚动行为，则相对该区域定位</p></li><li><p><strong>pageX/pageY</strong>：相对<code>网页区域左上角</code>定位</p></li><li><p><strong>clientX/clientY</strong>：相对<code>浏览器可视区域左上角</code>定位</p></li><li><p><strong>offsetX/offsetY</strong>：相对<code>父节点区域左上角</code>定位，若无父节点则相对<code>&lt;html&gt;</code>或<code>&lt;body&gt;</code>定位</p></li></ul><p>罗列出这些偏移量概念，发现<code>offsetX/offsetY</code>是最符合需求的，所以使用其作为放大镜显示内容相对父节点的显示位置。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;div class=&quot;magnifier&quot; @mousemove=&quot;move&quot;&gt;&lt;/div&gt;</span></span>
+<span class="line"><span>export default {</span></span>
+<span class="line"><span>    methods: {</span></span>
+<span class="line"><span>        move(e) {</span></span>
+<span class="line"><span>            e.target.style.setProperty(&quot;--x&quot;, \`\${e.offsetX}px\`);</span></span>
+<span class="line"><span>            e.target.style.setProperty(&quot;--y&quot;, \`\${e.offsetY}px\`);</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>};</span></span></code></pre></div><p>接下来使用<code>sass</code>构建放大镜效果。放大镜显示内容其实就是将原图像放大N倍，通过上述偏移量按照比例截取一定区域显示内容。</p><p>先定义相关的<code>Sass变量</code>。设定放大倍率为2倍，那么被放大图像的宽高也是原来宽高的2倍。声明两个变量，分为为<code>--x</code>和<code>--y</code>。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>$ratio: 2;</span></span>
+<span class="line"><span>$box-w: 600px;</span></span>
+<span class="line"><span>$box-h: 400px;</span></span>
+<span class="line"><span>$box-bg: &quot;https://static.yangzw.vip/codepen/gz.jpg&quot;;</span></span>
+<span class="line"><span>$outbox-w: $box-w * $ratio;</span></span>
+<span class="line"><span>$outbox-h: $box-h * $ratio;</span></span>
+<span class="line"><span>.magnifier {</span></span>
+<span class="line"><span>    --x: 0;</span></span>
+<span class="line"><span>    --y: 0;</span></span>
+<span class="line"><span>    overflow: hidden;</span></span>
+<span class="line"><span>    position: relative;</span></span>
+<span class="line"><span>    width: $box-w;</span></span>
+<span class="line"><span>    height: $box-h;</span></span>
+<span class="line"><span>    background: url($box-bg) no-repeat center/100% 100%;</span></span>
+<span class="line"><span>    cursor: pointer;</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>还记得第9章<strong>选择器</strong>的伪元素使用场景吗？在这个场景下很明显无需插入子节点作为放大镜的容器了，使用<code>::before</code>即可。</p><p>放大镜在使用时宽高为<code>100px</code>，不使用时宽高为<code>0px</code>。通过绝对定位布局放大镜随鼠标移动的位置，即声明<code>left</code>和<code>top</code>，再通过声明<code>transform:translate(-50%,-50%)</code>将放大镜补位，使放大镜中心与鼠标光标位置一致。由于声明<code>left</code>和<code>top</code>定位放大镜的位置，那么还需声明<code>will-change</code>改善<code>left</code>和<code>top</code>因改变而引发的性能问题。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>.magnifier {</span></span>
+<span class="line"><span>    &amp;::before {</span></span>
+<span class="line"><span>        --size: 0;</span></span>
+<span class="line"><span>        position: absolute;</span></span>
+<span class="line"><span>        left: var(--x);</span></span>
+<span class="line"><span>        top: var(--y);</span></span>
+<span class="line"><span>        border-radius: 100%;</span></span>
+<span class="line"><span>        width: var(--size);</span></span>
+<span class="line"><span>        height: var(--size);</span></span>
+<span class="line"><span>        box-shadow: 1px 1px 3px rgba(#000, .5);</span></span>
+<span class="line"><span>        content: &quot;&quot;;</span></span>
+<span class="line"><span>        will-change: left, top;</span></span>
+<span class="line"><span>        transform: translate(-50%, -50%);</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;:hover::before {</span></span>
+<span class="line"><span>        --size: 100px;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>接下来使用<code>background</code>实现放大镜显示内容。依据放大倍率为2倍，那么声明<code>size:$outbox-w $outbox-h</code>，通过声明<code>position-x</code>和<code>position-y</code>移动背景即可，最终连写成<code>background:#333 url($box-bg) no-repeat $scale-x $scale-y/$outbox-w $outbox-h</code>，而<code>$scale-x</code>和<code>$scale-y</code>对应<code>position-x</code>和<code>position-y</code>，用于随着鼠标移动而改变背景位置。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>水平方向偏移量 = offsetX * 倍率 - 放大镜宽度 / 倍率</span></span>
+<span class="line"><span>垂直方向偏移量 = offsetY * 倍率 - 放大镜高度 / 倍率</span></span></code></pre></div><p>基于第10章<strong>背景与遮罩</strong>的<code>background-position</code>正负值问题，上述两条公式还需乘以<code>-1</code>，则变成以下公式。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>水平方向偏移量 = 放大镜宽度 / 倍率 - offsetX * 倍率</span></span>
+<span class="line"><span>垂直方向偏移量 = 放大镜高度 / 倍率 - offsetY * 倍率</span></span></code></pre></div><p>此时将两条公式代入到<code>$scale-x</code>和<code>$scale-y</code>两个<code>Sass变量</code>中，若在<code>calc()</code>中使用<code>Sass变量</code>，需使用<code>#{}</code>的方式包含<code>Sass变量</code>，否则会按照字符串的方式解析。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>$scale-x: calc(var(--size) / #{$ratio} - #{$ratio} * var(--x));</span></span>
+<span class="line"><span>$scale-y: calc(var(--size) / #{$ratio} - #{$ratio} * var(--y));</span></span></code></pre></div><p>最终的<code>scss</code>文件如下。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>$ratio: 2;</span></span>
+<span class="line"><span>$box-w: 600px;</span></span>
+<span class="line"><span>$box-h: 400px;</span></span>
+<span class="line"><span>$box-bg: &quot;https://static.yangzw.vip/codepen/gz.jpg&quot;;</span></span>
+<span class="line"><span>$outbox-w: $box-w * $ratio;</span></span>
+<span class="line"><span>$outbox-h: $box-h * $ratio;</span></span>
+<span class="line"><span>.magnifier {</span></span>
+<span class="line"><span>    --x: 0;</span></span>
+<span class="line"><span>    --y: 0;</span></span>
+<span class="line"><span>    overflow: hidden;</span></span>
+<span class="line"><span>    position: relative;</span></span>
+<span class="line"><span>    width: $box-w;</span></span>
+<span class="line"><span>    height: $box-h;</span></span>
+<span class="line"><span>    background: url($box-bg) no-repeat center/100% 100%;</span></span>
+<span class="line"><span>    cursor: pointer;</span></span>
+<span class="line"><span>    &amp;::before {</span></span>
+<span class="line"><span>        --size: 0;</span></span>
+<span class="line"><span>        $scale-x: calc(var(--size) / #{$ratio} - #{$ratio} * var(--x));</span></span>
+<span class="line"><span>        $scale-y: calc(var(--size) / #{$ratio} - #{$ratio} * var(--y));</span></span>
+<span class="line"><span>        position: absolute;</span></span>
+<span class="line"><span>        left: var(--x);</span></span>
+<span class="line"><span>        top: var(--y);</span></span>
+<span class="line"><span>        border-radius: 100%;</span></span>
+<span class="line"><span>        width: var(--size);</span></span>
+<span class="line"><span>        height: var(--size);</span></span>
+<span class="line"><span>        background: #333 url($box-bg) no-repeat $scale-x $scale-y/$outbox-w $outbox-h;</span></span>
+<span class="line"><span>        box-shadow: 1px 1px 3px rgba(#000, .5);</span></span>
+<span class="line"><span>        content: &quot;&quot;;</span></span>
+<span class="line"><span>        will-change: left, top;</span></span>
+<span class="line"><span>        transform: translate(-50%, -50%);</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    &amp;:hover::before {</span></span>
+<span class="line"><span>        --size: 100px;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/oNbGzPy" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/component/%E6%94%BE%E5%A4%A7%E9%95%9C.vue" target="_blank" rel="noreferrer">Here</a></li></ul><h3 id="滚动渐变背景" tabindex="-1">滚动渐变背景 <a class="header-anchor" href="#滚动渐变背景" aria-label="Permalink to &quot;滚动渐变背景&quot;">​</a></h3><p>各位同学使用移动端APP应该会发现某些页面在滚动时，顶部背景颜色会发生细微的变化，该变化随着滚动距离的增大而导致背景颜色变淡。</p><p><img src="https://cdn.nlark.com/yuque/0/2020/gif/2985494/1607321735094-24b139fd-1ec8-4d12-a0c4-44831bbbc5eb.gif" alt="img"></p><p>有了上述示例作为铺垫，可清楚知道变量结合<code>鼠标事件</code>能完成更多的酷炫效果，而关键点是把鼠标的某些参数(例如<code>偏移量</code>)赋值到变量上，让变量随着鼠标参数的变化而变化。主要了解该技巧，就能开发出很多变量与JS通讯的<code>动画关联</code>和<code>事件响应</code>。</p><p>由于本示例与滚动有关，那么毫不犹豫地想起了<code>event.target.scrollTop</code>，监听滚动事件并将<code>event.target.scrollTop</code>赋值到变量上即可。另外，当滚动距离超过一定时需做一些限制，例如背景颜色不再发生变化。</p><div class="language-plain vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">plain</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>&lt;div ref=&quot;bg&quot; class=&quot;dynamic-bg&quot;&gt;</span></span>
+<span class="line"><span>    &lt;header&gt;&lt;/header&gt;</span></span>
+<span class="line"><span>    &lt;main @scroll=&quot;scroll&quot;&gt;</span></span>
+<span class="line"><span>        &lt;div&gt;</span></span>
+<span class="line"><span>            &lt;p&gt;网易公司（NASDAQ: NTES），1997年由创始人兼CEO丁磊先生在广州创办，2000年在美国NASDAQ股票交易所挂牌上市，是中国领先的互联网技术公司。在开发互联网应用、服务及其它技术方面，始终保持中国业界领先地位。本着对中国互联网发展强烈的使命感，缔造美好生活的愿景，网易利用最先进的互联网技术，加强人与人之间信息的交流和共享。&lt;/p&gt;</span></span>
+<span class="line"><span>            &lt;p&gt;网易公司推出了门户网站、在线游戏、电子邮箱、在线教育、电子商务、在线音乐、网易bobo等多种服务。网易在广州天河智慧城的总部项目计划2019年1月建成，网易游戏总部将入驻。2016年，游戏业务营业收入在网易总营收中占比73.3%。2011年，网易杭州研究院启用。网易传媒等业务在北京。网易在杭州上线了网易考拉海购、网易云音乐等项目。&lt;/p&gt;</span></span>
+<span class="line"><span>            &lt;p&gt;网易2019全年财报显示，网易公司2019年全年净收入为592.4亿元；基于非美国通用会计准则，归属于网易公司股东的持续经营净利润为156.6亿元。&lt;/p&gt;</span></span>
+<span class="line"><span>            &lt;p&gt;2019年，网易深入推进战略聚焦，坚守内容消费领域，积极布局游戏、教育、音乐、电商等核心赛道，取得重大突破。在保持稳健增长的同时，网易有道、创新及其他等业务板块爆发强大潜力，为未来的长期发展提供源源不断的动能。&lt;/p&gt;</span></span>
+<span class="line"><span>        &lt;/div&gt;</span></span>
+<span class="line"><span>    &lt;/main&gt;</span></span>
+<span class="line"><span>&lt;/div&gt;</span></span>
+<span class="line"><span>.dynamic-bg {</span></span>
+<span class="line"><span>    --scrolly: 250;</span></span>
+<span class="line"><span>    overflow: hidden;</span></span>
+<span class="line"><span>    position: relative;</span></span>
+<span class="line"><span>    border: 1px solid #66f;</span></span>
+<span class="line"><span>    width: 400px;</span></span>
+<span class="line"><span>    height: 400px;</span></span>
+<span class="line"><span>    header {</span></span>
+<span class="line"><span>        --Θ: calc(var(--scrolly) * 2deg);</span></span>
+<span class="line"><span>        --size: calc(1500px - var(--scrolly) * 2px);</span></span>
+<span class="line"><span>        --x: calc(var(--size) / 2 * -1);</span></span>
+<span class="line"><span>        --y: calc(var(--scrolly) * -1px);</span></span>
+<span class="line"><span>        --ratio: calc(50% - var(--scrolly) / 20 * 1%);</span></span>
+<span class="line"><span>        position: absolute;</span></span>
+<span class="line"><span>        left: 50%;</span></span>
+<span class="line"><span>        bottom: 100%;</span></span>
+<span class="line"><span>        margin: 0 0 var(--y) var(--x);</span></span>
+<span class="line"><span>        border-radius: var(--ratio);</span></span>
+<span class="line"><span>        width: var(--size);</span></span>
+<span class="line"><span>        height: var(--size);</span></span>
+<span class="line"><span>        background-color: #3c9;</span></span>
+<span class="line"><span>        filter: hue-rotate(var(--Θ));</span></span>
+<span class="line"><span>        animation: rotate 5s linear infinite;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    main {</span></span>
+<span class="line"><span>        overflow: auto;</span></span>
+<span class="line"><span>        position: relative;</span></span>
+<span class="line"><span>        width: 100%;</span></span>
+<span class="line"><span>        height: 100%;</span></span>
+<span class="line"><span>        div {</span></span>
+<span class="line"><span>            padding: 300px 20px 50px;</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>        p {</span></span>
+<span class="line"><span>            line-height: 1.2;</span></span>
+<span class="line"><span>            text-align: justify;</span></span>
+<span class="line"><span>            text-indent: 2em;</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>@keyframes rotate {</span></span>
+<span class="line"><span>    to {</span></span>
+<span class="line"><span>        transform: rotate(1turn);</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>export default {</span></span>
+<span class="line"><span>    mounted() {</span></span>
+<span class="line"><span>        this.bgStyle = this.$refs.bg.style;</span></span>
+<span class="line"><span>    },</span></span>
+<span class="line"><span>    methods: {</span></span>
+<span class="line"><span>        scroll(e) {</span></span>
+<span class="line"><span>            const top = e.target.scrollTop;</span></span>
+<span class="line"><span>            if (top &lt;= 250) {</span></span>
+<span class="line"><span>                this.bgStyle.setProperty(&quot;--scrolly&quot;, 250 - top);</span></span>
+<span class="line"><span>            } else {</span></span>
+<span class="line"><span>                this.bgStyle.setProperty(&quot;--scrolly&quot;, 0);</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>};</span></span></code></pre></div><hr><ul><li>在线演示：<a href="https://codepen.io/JowayYoung/pen/wvMxdNm" target="_blank" rel="noreferrer">Here</a></li><li>在线源码：<a href="https://github.com/JowayYoung/idea-css/blob/master/icss/src/components/component/%E6%BB%9A%E5%8A%A8%E6%B8%90%E5%8F%98%E8%83%8C%E6%99%AF.vue" target="_blank" rel="noreferrer">Here</a></li></ul>`,39),o=[l];function c(i,t,r,d,g,h){return n(),a("div",null,o)}const v=s(e,[["render",c]]);export{b as __pageData,v as default};
