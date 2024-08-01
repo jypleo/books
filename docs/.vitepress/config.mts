@@ -27,7 +27,6 @@ export default defineConfig({
           },
         ],
       },
-      { text: 'Examples', link: '/markdown-examples' },
     ],
     sidebar: generateSidebar([
       {
