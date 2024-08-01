@@ -21,6 +21,10 @@ export default defineConfig({
             text: 'TypeScript全面进阶指南',
             link: '/pamphlet/advanced-guide-to-mastering-typeScript/1.开篇：用正确的方式学习 TypeScript.md',
           },
+          {
+            text: '玩转css艺术之美',
+            link: '/pamphlet/玩转css艺术之美/1.准备篇：学前准备.md',
+          },
         ],
       },
       { text: 'Examples', link: '/markdown-examples' },
@@ -35,6 +39,11 @@ export default defineConfig({
       {
         documentRootPath: '/docs/pamphlet/webpack5',
         resolvePath: '/pamphlet/webpack5/',
+        sortMenusOrderNumericallyFromTitle: true,
+      },
+      {
+        documentRootPath: '/docs/pamphlet/玩转css艺术之美',
+        resolvePath: '/pamphlet/玩转css艺术之美/',
         sortMenusOrderNumericallyFromTitle: true,
       },
     ]),
