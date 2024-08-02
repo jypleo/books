@@ -62,9 +62,7 @@ export default defineConfig({
         sortMenusOrderNumericallyFromTitle: true,
       })),
     ),
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/jypleo/books' }],
   },
   vite: {
     assetsInclude: ['**/*.awebp'],
